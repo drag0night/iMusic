@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp"
+    android:paddingTop="30dp">
+
+    <TextView
+        android:id="@+id/textViewTieuDe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:text="Tạo playlist"
+        android:textSize="10pt"/>
+
+    <EditText
+        android:id="@+id/edtTenPlaylist"
+        android:layout_width="match_parent"
+        android:layout_height="70px"
+        android:layout_below="@id/textViewTieuDe"
+        android:layout_marginTop="15dp"
+        android:textSize="8pt"/>
+
+    <Button
+        android:id="@+id/btnThemPlaylist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thêm"
+        android:background="@null"
+        android:layout_below="@id/edtTenPlaylist"
+        android:layout_toStartOf="@id/btnBoqua"
+        android:textSize="7pt"
+        android:textColor="#d8373e"/>
+
+    <Button
+        android:id="@+id/btnBoqua"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bỏ qua"
+        android:background="@null"
+        android:layout_below="@id/edtTenPlaylist"
+        android:layout_alignParentEnd="true"
+        android:textSize="7pt"
+        android:textColor="#d8373e"/>
+
+</RelativeLayout>

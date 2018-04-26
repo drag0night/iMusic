@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_them_playlist"
+        android:icon="@drawable/ic_playlist_add"
+        android:title="Thêm vào playlist"
+        ></item>
+    <item
+        android:id="@+id/menu_xem_thong_tin"
+        android:title="Thông tin"
+        android:icon="@drawable/ic_info"></item>
+    <item
+        android:id="@+id/menu_xem_album"
+        android:title="Xem Album"
+        android:icon="@drawable/ic_album"></item>
+    <item
+        android:id="@+id/menu_xem_nghe_si"
+        android:title="Xem Nghệ Sĩ"
+        android:icon="@drawable/ic_people"></item>
+    <item
+        android:id="@+id/menu_xem_comment"
+        android:title="Xem Bình Luận"
+        android:icon="@drawable/ic_comment"></item>
+</menu>
