@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:descendantFocusability="blocksDescendants">
+
+    <ImageView
+        android:padding="5dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@mipmap/imusic"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="6">
+
+            <TextView
+                android:id="@+id/textViewTenAlbum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="My playlist 1"
+                android:textColor="#000"/>
+
+            <TextView
+                android:id="@+id/textViewSL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10 bài hát"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

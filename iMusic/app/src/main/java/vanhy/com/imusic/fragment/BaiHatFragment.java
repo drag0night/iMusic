@@ -1,4 +1,4 @@
-package vanhy.com.imusic;
+package vanhy.com.imusic.fragment;
 
 
 import android.app.Activity;
@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import vanhy.com.imusic.NgheNhacActivity;
+import vanhy.com.imusic.R;
 import vanhy.com.imusic.adapter.BaiHatAdapter;
 import vanhy.com.imusic.adapter.PlaylistAdapter;
 import vanhy.com.imusic.model.BaiHat;

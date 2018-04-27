@@ -1,4 +1,4 @@
-package vanhy.com.imusic;
+package vanhy.com.imusic.fragment;
 
 
 import android.app.Activity;
@@ -6,21 +6,20 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import vanhy.com.imusic.AddSongToNewPlaylistActivity;
+import vanhy.com.imusic.PlaylistDetailActivity;
+import vanhy.com.imusic.R;
 import vanhy.com.imusic.adapter.PlaylistAdapter;
 import vanhy.com.imusic.model.Playlist;
 
@@ -49,6 +48,14 @@ public class PlayListFragment extends Fragment {
         PlaylistAdapter adapter = new PlaylistAdapter(this.getContext(), R.layout.playlist_item, pl);
         listview.setAdapter(adapter);
 
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(context, PlaylistDetailActivity.class);
+                startActivity(intent);
+            }
+        });
+
         ImageButton btn = (ImageButton) view.findViewById(R.id.btnImageAddPlaylist);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +79,8 @@ public class PlayListFragment extends Fragment {
         btnThem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AddSongToNewPlaylist.class);
+                dialog.cancel();
+                Intent intent = new Intent(getActivity(), AddSongToNewPlaylistActivity.class);
                 startActivity(intent);
             }
         });

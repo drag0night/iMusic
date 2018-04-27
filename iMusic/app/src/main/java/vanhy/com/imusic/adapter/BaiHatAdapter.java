@@ -1,17 +1,19 @@
 package vanhy.com.imusic.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import vanhy.com.imusic.BottomSheetDialog;
 import vanhy.com.imusic.R;
 import vanhy.com.imusic.model.BaiHat;
 import vanhy.com.imusic.model.Playlist;
@@ -66,14 +68,36 @@ public class BaiHatAdapter extends BaseAdapter {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                android.support.design.widget.BottomSheetDialog dialog = new android.support.design.widget.BottomSheetDialog(context);
+                final android.support.design.widget.BottomSheetDialog dialog = new android.support.design.widget.BottomSheetDialog(context);
                 View temp = inflater.inflate(R.layout.bottom_set_dialog_list_bh, null);
                 dialog.setContentView(temp);
                 dialog.show();
+                LinearLayout btnAdd = (LinearLayout) temp.findViewById(R.id.addToPlaylist);
+                btnAdd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Dialog dialogadd = new Dialog(context);
+                        dialogadd.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        View temp1 = inflater.inflate(R.layout.add_to_playlist_dialog, null);
+                        ListView listView = (ListView) temp1.findViewById(R.id.listViewPlaylist);
+                        ArrayList<Playlist> listPl = new ArrayList<Playlist>();
+                        listPl.add(new Playlist("My playlist 1", 10));
+                        listPl.add(new Playlist("My playlist 2", 50));
+                        AddToPlaylistAdapter adapter = new AddToPlaylistAdapter(context, R.layout.add_to_playlist_item, listPl);
+                        listView.setAdapter(adapter);
+                        dialogadd.setContentView(temp1);
+                        dialogadd.show();
+                        dialog.cancel();
+                    }
+                });
             }
         });
 
         return view;
+    }
+
+    private void setOnClick() {
+
     }
 
     private class ViewHolder {

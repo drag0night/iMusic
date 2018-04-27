@@ -17,7 +17,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".NgheNhacActivity" />
-        <activity android:name=".AddSongToNewPlaylist"></activity>
+        <activity android:name=".AddSongToNewPlaylistActivity" />
+        <activity android:name=".PlaylistDetailActivity" />
+        <activity android:name=".CaSiDetailActivity" />
+        <activity android:name=".AlbumDetailActivity"></activity>
     </application>
 
 </manifest>

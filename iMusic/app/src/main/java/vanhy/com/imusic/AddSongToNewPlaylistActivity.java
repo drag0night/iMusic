@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import vanhy.com.imusic.adapter.ChonBaiHatAdapter;
 import vanhy.com.imusic.model.BaiHat;
 
-public class AddSongToNewPlaylist extends AppCompatActivity {
+public class AddSongToNewPlaylistActivity extends AppCompatActivity {
 
     private ListView listView;
 

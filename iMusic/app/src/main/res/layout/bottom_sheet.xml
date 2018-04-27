@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:gravity="center_vertical"
-    tools:context=".BottomSheetDialog"
+    tools:context=".dialog.BottomSheetDialog"
     android:paddingBottom="5dp">
 
     <LinearLayout

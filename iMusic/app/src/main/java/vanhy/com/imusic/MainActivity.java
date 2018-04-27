@@ -5,10 +5,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ContextMenu;
-import android.view.Menu;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
+
+import vanhy.com.imusic.adapter.PagerMainAdapter;
 
 public class MainActivity extends AppCompatActivity {
 

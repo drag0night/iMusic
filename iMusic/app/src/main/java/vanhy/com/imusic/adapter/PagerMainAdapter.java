@@ -1,8 +1,11 @@
-package vanhy.com.imusic;
+package vanhy.com.imusic.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+
+import vanhy.com.imusic.fragment.CaNhanFragment;
+import vanhy.com.imusic.fragment.TrangChuFragment;
 
 public class PagerMainAdapter extends FragmentStatePagerAdapter{
     private static int numOfTabs;
