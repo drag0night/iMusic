@@ -20,7 +20,8 @@
         <activity android:name=".AddSongToNewPlaylistActivity" />
         <activity android:name=".PlaylistDetailActivity" />
         <activity android:name=".CaSiDetailActivity" />
-        <activity android:name=".AlbumDetailActivity"></activity>
+        <activity android:name=".AlbumDetailActivity" />
+        <activity android:name=".LoginActivity"></activity>
     </application>
 
 </manifest>
