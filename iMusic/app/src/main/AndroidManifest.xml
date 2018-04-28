@@ -21,7 +21,8 @@
         <activity android:name=".PlaylistDetailActivity" />
         <activity android:name=".CaSiDetailActivity" />
         <activity android:name=".AlbumDetailActivity" />
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".RegisterActivity"></activity>
     </application>
 
 </manifest>
