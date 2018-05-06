@@ -22,19 +22,19 @@ public class PagerAdapter extends FragmentStatePagerAdapter{
     public Fragment getItem(int position) {
         switch (position) {
             case 0: {
-                return new BaiHatFragment();
+                return BaiHatFragment.getInstance();
             }
 
             case 1: {
-                return new PlayListFragment();
+                return PlayListFragment.getInstance();
             }
 
             case 2: {
-                return new CaSiFragment();
+                return CaSiFragment.getInstance();
             }
 
             case 3: {
-                return new AlbumFragment();
+                return AlbumFragment.getInstance();
             }
 
             default: {

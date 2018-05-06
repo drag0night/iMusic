@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 import vanhy.com.imusic.Config;
 import vanhy.com.imusic.model.BaiHat;
-import vanhy.com.imusic.model.Song;
 
 
 public class SoundcloudApiRequest {

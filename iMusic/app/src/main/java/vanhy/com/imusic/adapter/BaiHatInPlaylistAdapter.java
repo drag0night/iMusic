@@ -6,7 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -50,6 +53,7 @@ public class BaiHatInPlaylistAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.textViewTenBh = (TextView) view.findViewById(R.id.textViewTenPL);
             holder.textViewTenCs = (TextView) view.findViewById(R.id.textViewSL_PL);
+            holder.imgPlaylist = (ImageView) view.findViewById(R.id.imgPlaylist);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
@@ -57,7 +61,9 @@ public class BaiHatInPlaylistAdapter extends BaseAdapter {
 
         BaiHat bh = listBh.get(i);
 
-
+        holder.textViewTenBh.setText(bh.getTitle());
+        holder.textViewTenCs.setText(bh.getArtist());
+        Picasso.with(context).load(bh.getArtworkUrl()).placeholder(R.drawable.music_placeholder).into(holder.imgPlaylist);
 
         return view;
     }
@@ -65,6 +71,7 @@ public class BaiHatInPlaylistAdapter extends BaseAdapter {
     private class ViewHolder {
         TextView textViewTenBh;
         TextView textViewTenCs;
+        ImageView imgPlaylist;
     }
 
 }

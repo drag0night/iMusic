@@ -5,7 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -49,6 +52,7 @@ public class AddToPlaylistAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.textViewTenpl = (TextView) view.findViewById(R.id.textViewTenPL);
             holder.textViewsl = (TextView) view.findViewById(R.id.textViewSL);
+            holder.imgPlaylist = (ImageView) view.findViewById(R.id.imgPlaylist);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
@@ -57,7 +61,8 @@ public class AddToPlaylistAdapter extends BaseAdapter {
         Playlist pl = listpl.get(i);
 
         holder.textViewTenpl.setText(pl.getTen());
-        holder.textViewsl.setText(pl.getSl()+" bài hát");
+        holder.textViewsl.setText(pl.getListBh().size()+" bài hát");
+        Picasso.with(context).load(pl.getListBh().get(0).getArtworkUrl()).placeholder(R.drawable.music_placeholder).into(holder.imgPlaylist);
 
         return view;
     }
@@ -65,6 +70,7 @@ public class AddToPlaylistAdapter extends BaseAdapter {
     private class ViewHolder {
         TextView textViewTenpl;
         TextView textViewsl;
+        ImageView imgPlaylist;
     }
 
 }

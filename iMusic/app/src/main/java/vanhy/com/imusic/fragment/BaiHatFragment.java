@@ -2,18 +2,17 @@ package vanhy.com.imusic.fragment;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.support.design.widget.BottomSheetDialog;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,15 +22,11 @@ import com.android.volley.RequestQueue;
 
 import java.util.ArrayList;
 
-import vanhy.com.imusic.MainActivity;
 import vanhy.com.imusic.NgheNhacActivity;
 import vanhy.com.imusic.R;
 import vanhy.com.imusic.VolleySingleton;
 import vanhy.com.imusic.adapter.BaiHatAdapter;
-import vanhy.com.imusic.adapter.PlaylistAdapter;
 import vanhy.com.imusic.model.BaiHat;
-import vanhy.com.imusic.model.Playlist;
-import vanhy.com.imusic.model.Song;
 import vanhy.com.imusic.request.SoundcloudApiRequest;
 
 
@@ -48,9 +43,14 @@ public class BaiHatFragment extends Fragment {
     private ArrayList<BaiHat> songList;
     private TextView textTenbh, textCasi;
     private ImageView imgBh;
+    private static final BaiHatFragment instance = new BaiHatFragment();
 
     public BaiHatFragment() {
         // Required empty public constructor
+    }
+
+    public static BaiHatFragment getInstance() {
+        return instance;
     }
 
 
@@ -69,9 +69,8 @@ public class BaiHatFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(context, NgheNhacActivity.class);
-                intent.putExtra("song",songList.get(position));
                 intent.putExtra("songList", songList);
-                intent.putExtra("positon", position);
+                intent.putExtra("position", position);
                 startActivity(intent);
             }
         });
@@ -98,7 +97,6 @@ public class BaiHatFragment extends Fragment {
                 songList.clear();
                 songList.addAll(songs);
                 adapter.notifyDataSetChanged();
-
             }
 
             @Override

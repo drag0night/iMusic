@@ -1,15 +1,28 @@
 package vanhy.com.imusic.model;
 
+import android.support.annotation.NonNull;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Playlist {
+public class Playlist implements Comparable<BaiHat>, Serializable {
 
+    private int id;
     private String ten;
-    private int sl;
+    private ArrayList<BaiHat> listBh;
 
-    public Playlist(String ten, int sl) {
+    public Playlist(int id, String ten, ArrayList<BaiHat> listBh) {
+        this.id = id;
         this.ten = ten;
-        this.sl = sl;
+        this.listBh = listBh;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTen() {
@@ -20,11 +33,16 @@ public class Playlist {
         this.ten = ten;
     }
 
-    public int getSl() {
-        return sl;
+    public ArrayList<BaiHat> getListBh() {
+        return listBh;
     }
 
-    public void setSl(int sl) {
-        this.sl = sl;
+    public void setListBh(ArrayList<BaiHat> listBh) {
+        this.listBh = listBh;
+    }
+
+    @Override
+    public int compareTo(@NonNull BaiHat o) {
+        return 0;
     }
 }

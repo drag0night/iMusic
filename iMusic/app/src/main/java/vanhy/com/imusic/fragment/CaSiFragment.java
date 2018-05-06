@@ -28,9 +28,14 @@ public class CaSiFragment extends Fragment {
     private Activity context;
     private ListView listview;
     private ArrayList<CaSi> list;
+    private static final CaSiFragment instance = new CaSiFragment();
 
     public CaSiFragment() {
         // Required empty public constructor
+    }
+
+    public static CaSiFragment getInstance() {
+        return instance;
     }
 
 

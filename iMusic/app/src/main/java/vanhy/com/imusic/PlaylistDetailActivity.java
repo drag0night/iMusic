@@ -10,11 +10,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import vanhy.com.imusic.adapter.BaiHatInPlaylistAdapter;
 import vanhy.com.imusic.model.BaiHat;
+import vanhy.com.imusic.model.Playlist;
 
 public class PlaylistDetailActivity extends AppCompatActivity {
 
@@ -22,6 +26,9 @@ public class PlaylistDetailActivity extends AppCompatActivity {
     private ArrayList<BaiHat> listBh;
     private ImageView btnBack;
     private ImageView btnMore;
+    private Playlist playlist;
+    private ImageView imgPlaylist;
+    private TextView txtTenpl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +38,13 @@ public class PlaylistDetailActivity extends AppCompatActivity {
         listview = (ListView) findViewById(R.id.listViewBaiHat);
         btnBack = (ImageView) findViewById(R.id.btnImageBack);
         btnMore = (ImageView) findViewById(R.id.btnImageMore);
+        imgPlaylist = (ImageView) findViewById(R.id.imgPlaylist);
+        txtTenpl = (TextView) findViewById(R.id.txtTenpl);
 
-        listBh = new ArrayList<BaiHat>();
+        playlist = (Playlist) getIntent().getSerializableExtra("playlist");
+        Picasso.with(this).load(playlist.getListBh().get(0).getArtworkUrl()).placeholder(R.drawable.music_placeholder).into(imgPlaylist);
+        txtTenpl.setText(playlist.getTen());
+        listBh = playlist.getListBh();
         BaiHatInPlaylistAdapter adapter = new BaiHatInPlaylistAdapter(this, R.layout.bai_hat_in_playlist_item, listBh);
         listview.setAdapter(adapter);
 
@@ -40,6 +52,8 @@ public class PlaylistDetailActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(PlaylistDetailActivity.this, NgheNhacActivity.class);
+                intent.putExtra("songList", listBh);
+                intent.putExtra("position", position);
                 startActivity(intent);
             }
         });
@@ -52,6 +66,13 @@ public class PlaylistDetailActivity extends AppCompatActivity {
                 View view = ((LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.bottom_sheet_list_playlist, null);
                 dialog.setContentView(view);
                 dialog.show();
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }

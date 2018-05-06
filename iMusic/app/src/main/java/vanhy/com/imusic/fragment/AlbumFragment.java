@@ -27,6 +27,11 @@ public class AlbumFragment extends Fragment {
     private Activity context;
     private ListView listview;
     private ArrayList<Album> list;
+    private static final AlbumFragment instance = new AlbumFragment();
+
+    public static AlbumFragment getInstance() {
+        return instance;
+    }
 
 
     public AlbumFragment() {
