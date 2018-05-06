@@ -28,8 +28,6 @@ public class AlbumDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_album_detail);
         listview = (ListView) findViewById(R.id.listViewBaiHat);
         ArrayList<BaiHat> list = new ArrayList<BaiHat>();
-        list.add(new BaiHat("Ta còn yêu nhau", "ĐỨC PHÚC"));
-        list.add(new BaiHat("Năm ấy", "ĐỨC PHÚC"));
         BaiHatInPlaylistAdapter adapter = new BaiHatInPlaylistAdapter(this, R.layout.bai_hat_in_playlist_item, list);
         listview.setAdapter(adapter);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {

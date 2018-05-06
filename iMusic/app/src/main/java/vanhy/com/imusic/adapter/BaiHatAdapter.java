@@ -8,9 +8,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -55,6 +58,7 @@ public class BaiHatAdapter extends BaseAdapter {
             holder = new BaiHatAdapter.ViewHolder();
             holder.textViewTenBh = (TextView) view.findViewById(R.id.textViewTenPL);
             holder.textViewTenCs = (TextView) view.findViewById(R.id.textViewSL_PL);
+            holder.imgBaihat = (ImageView) view.findViewById(R.id.imageBaihat);
             view.setTag(holder);
         } else {
             holder = (BaiHatAdapter.ViewHolder) view.getTag();
@@ -62,8 +66,9 @@ public class BaiHatAdapter extends BaseAdapter {
         btn = (ImageButton) view.findViewById(R.id.btnImageMore_BH);
         BaiHat bh = listBH.get(i);
 
-        holder.textViewTenBh.setText(bh.getTen());
-        holder.textViewTenCs.setText(bh.getCasi());
+        holder.textViewTenBh.setText(bh.getTitle());
+        holder.textViewTenCs.setText(bh.getArtist());
+        Picasso.with(context).load(bh.getArtworkUrl()).placeholder(R.drawable.music_placeholder).into(holder.imgBaihat);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,12 +101,10 @@ public class BaiHatAdapter extends BaseAdapter {
         return view;
     }
 
-    private void setOnClick() {
-
-    }
 
     private class ViewHolder {
         private TextView textViewTenBh;
         private TextView textViewTenCs;
+        private ImageView imgBaihat;
     }
 }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import vanhy.com.imusic.adapter.PagerMainAdapter;
 

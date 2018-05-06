@@ -11,7 +11,5 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        register_layout = findViewById(R.id.register_layout);
-        register_layout.setBackgroundResource(R.drawable.background);
     }
 }

@@ -58,8 +58,8 @@ public class ChonBaiHatAdapter extends BaseAdapter {
 
         BaiHat bh = listBh.get(i);
 
-        holder.textViewTenBh.setText(bh.getTen());
-        holder.textViewTenCs.setText(bh.getCasi());
+        holder.textViewTenBh.setText(bh.getTitle());
+        holder.textViewTenCs.setText(bh.getArtist());
 
         return view;
     }

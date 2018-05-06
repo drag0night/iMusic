@@ -33,14 +33,6 @@ public class PlaylistDetailActivity extends AppCompatActivity {
         btnMore = (ImageView) findViewById(R.id.btnImageMore);
 
         listBh = new ArrayList<BaiHat>();
-        listBh.add(new BaiHat("1 2 3 4","CHI DÂN"));
-        listBh.add(new BaiHat("Ta còn yêu nhau", "ĐỨC PHÚC"));
-        listBh.add(new BaiHat("Năm ấy", "ĐỨC PHÚC"));
-        listBh.add(new BaiHat("Mặt trời của em","PHƯƠNG LY ft JUSTATEE"));
-        listBh.add(new BaiHat("Đã lỡ yêu em nhiều", "JUSTATEE"));
-        listBh.add(new BaiHat("Chạm khẽ tim anh một chút thôi","NOO PHƯỚC THỊNH"));
-        listBh.add(new BaiHat("Vợ người ta", "PHAN MẠNH QUỲNH"));
-        listBh.add(new BaiHat("Ngắm hoa lệ rơi","HOA VINH"));
         BaiHatInPlaylistAdapter adapter = new BaiHatInPlaylistAdapter(this, R.layout.bai_hat_in_playlist_item, listBh);
         listview.setAdapter(adapter);
 

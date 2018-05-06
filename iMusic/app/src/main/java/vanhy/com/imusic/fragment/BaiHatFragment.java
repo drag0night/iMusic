@@ -7,22 +7,32 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
 
 import java.util.ArrayList;
 
+import vanhy.com.imusic.MainActivity;
 import vanhy.com.imusic.NgheNhacActivity;
 import vanhy.com.imusic.R;
+import vanhy.com.imusic.VolleySingleton;
 import vanhy.com.imusic.adapter.BaiHatAdapter;
 import vanhy.com.imusic.adapter.PlaylistAdapter;
 import vanhy.com.imusic.model.BaiHat;
 import vanhy.com.imusic.model.Playlist;
+import vanhy.com.imusic.model.Song;
+import vanhy.com.imusic.request.SoundcloudApiRequest;
 
 
 /**
@@ -32,6 +42,12 @@ public class BaiHatFragment extends Fragment {
 
     private Activity context;
     private  ListView listview;
+    private static final String TAG = "APP";
+    private RecyclerView recycler;
+    private BaiHatAdapter adapter;
+    private ArrayList<BaiHat> songList;
+    private TextView textTenbh, textCasi;
+    private ImageView imgBh;
 
     public BaiHatFragment() {
         // Required empty public constructor
@@ -39,27 +55,23 @@ public class BaiHatFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_bai_hat, container, false);
         context = getActivity();
-        ArrayList<BaiHat> list = new ArrayList<BaiHat>();
-        list.add(new BaiHat("1 2 3 4","CHI DÂN"));
-        list.add(new BaiHat("Ta còn yêu nhau", "ĐỨC PHÚC"));
-        list.add(new BaiHat("Năm ấy", "ĐỨC PHÚC"));
-        list.add(new BaiHat("Mặt trời của em","PHƯƠNG LY ft JUSTATEE"));
-        list.add(new BaiHat("Đã lỡ yêu em nhiều", "JUSTATEE"));
-        list.add(new BaiHat("Chạm khẽ tim anh một chút thôi","NOO PHƯỚC THỊNH"));
-        list.add(new BaiHat("Vợ người ta", "PHAN MẠNH QUỲNH"));
-        list.add(new BaiHat("Ngắm hoa lệ rơi","HOA VINH"));
+        songList = new ArrayList<BaiHat>();
+        getSongList("Đức Phúc");
         listview = (ListView) view.findViewById(R.id.listViewBaiHat);
-        BaiHatAdapter adapter = new BaiHatAdapter(context, R.layout.playlist_item, list);
+        adapter = new BaiHatAdapter(context, R.layout.playlist_item, songList);
         listview.setAdapter(adapter);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(context, NgheNhacActivity.class);
+                intent.putExtra("song",songList.get(position));
+                intent.putExtra("songList", songList);
+                intent.putExtra("positon", position);
                 startActivity(intent);
             }
         });
@@ -69,5 +81,30 @@ public class BaiHatFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+    }
+
+    private void prepareSong(BaiHat baiHat) {
+        textTenbh.setVisibility(View.GONE);
+        textTenbh.setText(baiHat.getTitle());
+        textCasi.setText(baiHat.getArtist());
+    }
+
+    public void getSongList(String query){
+        RequestQueue queue = VolleySingleton.getInstance(context).getRequestQueue();
+        SoundcloudApiRequest request = new SoundcloudApiRequest(queue);
+        request.getSongList(query, new SoundcloudApiRequest.SoundcloudInterface() {
+            @Override
+            public void onSuccess(ArrayList<BaiHat> songs) {
+                songList.clear();
+                songList.addAll(songs);
+                adapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onError(String message) {
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

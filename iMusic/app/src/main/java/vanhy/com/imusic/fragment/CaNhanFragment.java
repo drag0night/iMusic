@@ -1,6 +1,7 @@
 package vanhy.com.imusic.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -8,7 +9,9 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
+import vanhy.com.imusic.LoginActivity;
 import vanhy.com.imusic.R;
 import vanhy.com.imusic.adapter.PagerAdapter;
 
@@ -53,6 +56,15 @@ public class CaNhanFragment extends Fragment {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
+            }
+        });
+
+        RelativeLayout btnDangnhap = (RelativeLayout) view.findViewById(R.id.login);
+        btnDangnhap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
             }
         });
         return view;

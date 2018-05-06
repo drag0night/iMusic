@@ -57,8 +57,7 @@ public class BaiHatInPlaylistAdapter extends BaseAdapter {
 
         BaiHat bh = listBh.get(i);
 
-        holder.textViewTenBh.setText(bh.getTen());
-        holder.textViewTenCs.setText(bh.getCasi());
+
 
         return view;
     }
