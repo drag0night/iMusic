@@ -4,7 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import vanhy.com.imusic.fragment.AlbumFragment;
 import vanhy.com.imusic.fragment.BaiHatFragment;
 import vanhy.com.imusic.fragment.CaSiFragment;
 import vanhy.com.imusic.fragment.PlayListFragment;
@@ -34,7 +33,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter{
             }
 
             case 3: {
-                return AlbumFragment.getInstance();
+                return CaSiFragment.getInstance();
             }
 
             default: {

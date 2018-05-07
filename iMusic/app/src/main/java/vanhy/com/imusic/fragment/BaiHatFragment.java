@@ -93,9 +93,9 @@ public class BaiHatFragment extends Fragment {
         SoundcloudApiRequest request = new SoundcloudApiRequest(queue);
         request.getSongList(query, new SoundcloudApiRequest.SoundcloudInterface() {
             @Override
-            public void onSuccess(ArrayList<BaiHat> songs) {
+            public void onSuccess( Object songs) {
                 songList.clear();
-                songList.addAll(songs);
+                songList.addAll((ArrayList<BaiHat>)songs);
                 adapter.notifyDataSetChanged();
             }
 

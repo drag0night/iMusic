@@ -1,27 +1,43 @@
 package vanhy.com.imusic.model;
 
-public class Album {
-    private String ten;
-    private int sl;
+import android.support.annotation.NonNull;
 
-    public Album(String ten, int sl) {
-        this.ten = ten;
-        this.sl = sl;
+import java.io.Serializable;
+
+public class Album implements Serializable{
+    private long id;
+    private String title;
+    private String artist;
+    private String artworkUrl;
+    private long track_count;
+
+    public Album(long id, String title, String artist, String artworkUrl, long trackcount) {
+        this.id = id;
+        this.title = title;
+        this.artist = artist;
+        this.artworkUrl = artworkUrl;
+        this.track_count = trackcount;
     }
 
-    public String getTen() {
-        return ten;
+    public long getId() {
+        return id;
     }
 
-    public void setTen(String ten) {
-        this.ten = ten;
+    public String getTitle() {
+        return title;
     }
 
-    public int getSl() {
-        return sl;
+    public String getArtist() {
+        return artist;
     }
 
-    public void setSl(int sl) {
-        this.sl = sl;
+    public String getArtworkUrl() {
+        return artworkUrl;
     }
+
+    public long getTrachCount() {
+        return track_count;
+    }
+
+
 }

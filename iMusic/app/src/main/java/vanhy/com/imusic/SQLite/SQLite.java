@@ -226,4 +226,56 @@ public class SQLite {
         }
         return true;
     }
+
+    public static boolean createHistoryDatabase(Context context){
+        try {
+            SQLiteDatabase db = context.openOrCreateDatabase(db_name, context.MODE_PRIVATE, null);
+            String query="CREATE TABLE IF NOT EXISTS search_history(id integer PRIMARY KEY AUTOINCREMENT, history text)";
+            db.execSQL(query);
+            db.close();
+
+            return true;
+        } catch (Exception e) {
+            Log.e("SQLite: ",e.getMessage());
+            return false;
+        }
+    }
+
+
+    public static boolean addHistory(Context context, ArrayList<String> history) {
+        try {
+            if(history==null) return false;
+            SQLiteDatabase db = context.openOrCreateDatabase(db_name, context.MODE_PRIVATE, null);
+            String query="DELETE FROM search_history";
+            db.execSQL(query);
+            query="";
+            for (String value : history) {
+                query=query+"INSERT INTO search_history(history) VALUES("+"'"+value+"'"+"); ";
+            }
+            if(history.size()>0){
+                db.execSQL(query);
+            }
+
+            db.close();
+            return true;
+        } catch (Exception e) {
+            Log.e("SQLite: ",e.getMessage());
+            return false;
+        }
+    }
+
+    public static ArrayList<String> getHistory(Context context) {
+        ArrayList<String> historyList=new ArrayList<>();
+        try {
+            SQLiteDatabase db = context.openOrCreateDatabase(db_name, context.MODE_PRIVATE,null);
+            Cursor cs = db.rawQuery("SELECT * FROM search_history", null);
+            while (cs.moveToNext()) {
+                historyList.add(cs.getString(1));
+            }
+            db.close();
+        } catch (Exception e) {
+            Log.e("SQLite: ",e.getMessage());
+        }
+        return historyList;
+    }
 }
