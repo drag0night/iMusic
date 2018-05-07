@@ -96,9 +96,13 @@ public class PlayListFragment extends Fragment implements OnAddedToDB{
             public void onClick(View v) {
                 String tenpl = edtTenpl.getText().toString();
                 if (!"".equals(tenpl)) {
-                    Intent intent = new Intent(getActivity(), AddSongToNewPlaylistActivity.class);
-                    intent.putExtra("tenpl", tenpl);
-                    startActivity(intent);
+                    if (!SQLite.checkPlaylistNameExist(context, tenpl)) {
+                        Intent intent = new Intent(getActivity(), AddSongToNewPlaylistActivity.class);
+                        intent.putExtra("tenpl", tenpl);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(context, "Playlist đã tồn tại", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 dialog.cancel();
             }

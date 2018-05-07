@@ -46,6 +46,7 @@
         android:background="#c1c1c1"></LinearLayout>
 
     <LinearLayout
+        android:id="@+id/btnImageEditList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
@@ -65,15 +66,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:text="Sửa danh sách"
-                android:textColor="#000"
-                android:layout_margin="5dp" />
+                android:textColor="#000" />
 
         </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/btnImageEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
@@ -93,14 +95,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:text="Sửa tên playlist"
-                android:textColor="#000"
-                android:layout_margin="5dp" />
+                android:textColor="#000" />
 
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/btnImageXoa"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
@@ -109,8 +112,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -120,9 +123,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:text="Xóa"
-                android:textColor="#000"
-                android:layout_margin="5dp" />
+                android:textColor="#000" />
 
         </LinearLayout>
     </LinearLayout>

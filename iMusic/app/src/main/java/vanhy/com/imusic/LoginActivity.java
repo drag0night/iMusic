@@ -23,7 +23,9 @@ public class LoginActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        SQLite.createDatabase(this);
+        if (!SQLite.checkDbExist(this)) {
+            SQLite.createDatabase(this);
+        }
         init();
         linkResgister.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -138,12 +138,16 @@ public class BaiHatAdapter extends BaseAdapter {
                                     public void onClick(View v) {
                                         String tenpl = edtTenpl.getText().toString();
                                         if (!"".equals(tenpl)) {
-                                            ArrayList<BaiHat> arrBh = new ArrayList<BaiHat>();
-                                            arrBh.add(listBH.get(i));
-                                            SQLite.createPlaylist(context, tenpl, arrBh);
-                                            OnAddedToDB onAddedToDB = PlayListFragment.getInstance();
-                                            onAddedToDB.onRefresh();
-                                            Toast.makeText(context, "Thêm vào playlist thành công", Toast.LENGTH_SHORT).show();
+                                            if (!SQLite.checkPlaylistNameExist(context, tenpl)) {
+                                                ArrayList<BaiHat> arrBh = new ArrayList<BaiHat>();
+                                                arrBh.add(listBH.get(i));
+                                                SQLite.createPlaylist(context, tenpl, arrBh);
+                                                OnAddedToDB onAddedToDB = PlayListFragment.getInstance();
+                                                onAddedToDB.onRefresh();
+                                                Toast.makeText(context, "Thêm vào playlist thành công", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(context, "Playlist đã tồn tại", Toast.LENGTH_SHORT).show();
+                                            }
                                         }
                                         dialog_add_pl.cancel();
                                     }

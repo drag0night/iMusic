@@ -42,7 +42,11 @@ public class PlaylistDetailActivity extends AppCompatActivity {
         txtTenpl = (TextView) findViewById(R.id.txtTenpl);
 
         playlist = (Playlist) getIntent().getSerializableExtra("playlist");
-        Picasso.with(this).load(playlist.getListBh().get(0).getArtworkUrl()).placeholder(R.drawable.music_placeholder).into(imgPlaylist);
+        if (playlist.getListBh().size() == 0) {
+            imgPlaylist.setImageResource(R.drawable.music_placeholder);
+        } else {
+            Picasso.with(this).load(playlist.getListBh().get(0).getArtworkUrl()).placeholder(R.drawable.music_placeholder).into(imgPlaylist);
+        }
         txtTenpl.setText(playlist.getTen());
         listBh = playlist.getListBh();
         BaiHatInPlaylistAdapter adapter = new BaiHatInPlaylistAdapter(this, R.layout.bai_hat_in_playlist_item, listBh);

@@ -27,8 +27,10 @@ import org.w3c.dom.Text;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import vanhy.com.imusic.Utility.Randomize;
 import vanhy.com.imusic.Utility.Utility;
 import vanhy.com.imusic.model.BaiHat;
+import vanhy.com.imusic.sharedpreference.SharedManagers;
 
 public class NgheNhacActivity extends AppCompatActivity{
 
@@ -42,10 +44,16 @@ public class NgheNhacActivity extends AppCompatActivity{
     private TextView textTenbh;
     private TextView textTencs;
     private ImageView imageView;
+    private ImageButton btnRepeat;
+    private ImageButton btnShuffle;
 
     private ArrayList<BaiHat> songList;
     private int pos;
+    private int pos_shuff;
+    private int[] shuff;
     private long currentSongLength;
+    private boolean isShuffle;
+    private boolean isRepeat;
 
     private MediaPlayer mPlayer;
     private Animation animation;
@@ -56,7 +64,12 @@ public class NgheNhacActivity extends AppCompatActivity{
         setContentView(R.layout.activity_nghe_nhac);
         initView();
         songList = (ArrayList<BaiHat>) getIntent().getSerializableExtra("songList");
+        SharedManagers.init(this);
+        isShuffle = SharedManagers.getInstance().getSuff();
+        isRepeat = SharedManagers.getInstance().getRepeat();
         pos = getIntent().getIntExtra("position",0);
+        pos_shuff=0;
+        shuff = Randomize.getShuffle(songList.size());
         mPlayer = new MediaPlayer();
         mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -65,24 +78,8 @@ public class NgheNhacActivity extends AppCompatActivity{
                 toggle(mp);
             }
         });
-
-        mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-
-                if(pos + 1 < songList.size()){
-                    BaiHat next = songList.get(pos + 1);
-                    changeSelectedSong(pos+1);
-                    preparedSong(next);
-                }else{
-                    BaiHat next = songList.get(0);
-                    changeSelectedSong(0);
-                    preparedSong(next);
-                }
-
-            }
-        });
-
+        checkRepeat();
+        checkShuffle();
         currentSongLength = songList.get(pos).getDuration();
         String stream = songList.get(pos).getStreamUrl()+"?client_id="+ Config.CLIENT_ID;
         textTencs.setText(songList.get(pos).getArtist());
@@ -96,8 +93,8 @@ public class NgheNhacActivity extends AppCompatActivity{
             e.printStackTrace();
         }
         play();
-        previous();
-        next();
+        repeat();
+        shuffle();
         handleSeekbar();
         clickMore();
     }
@@ -114,6 +111,8 @@ public class NgheNhacActivity extends AppCompatActivity{
         textTencs = (TextView) findViewById(R.id.textTenCasi);
         animation = AnimationUtils.loadAnimation(this, R.anim.disc_anim);
         imageView = (ImageView) findViewById(R.id.imageView);
+        btnRepeat = (ImageButton) findViewById(R.id.btnImageRepeat);
+        btnShuffle = (ImageButton) findViewById(R.id.btnImageShuffle);
     }
 
     private void handleSeekbar(){
@@ -134,6 +133,165 @@ public class NgheNhacActivity extends AppCompatActivity{
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
 
+            }
+        });
+    }
+
+    private void checkRepeat() {
+        if (isRepeat == true) {
+            mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    BaiHat next = songList.get(pos);
+                    changeSelectedSong(pos);
+                    preparedSong(next);
+                }
+            });
+            btnRepeat.setImageDrawable(ContextCompat.getDrawable(NgheNhacActivity.this, R.drawable.ic_repeat_one));
+        } else {
+            mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    if(pos + 1 < songList.size()){
+                        BaiHat next = songList.get(pos + 1);
+                        changeSelectedSong(pos+1);
+                        preparedSong(next);
+                    }else{
+                        BaiHat next = songList.get(0);
+                        changeSelectedSong(0);
+                        preparedSong(next);
+                    }
+                }
+            });
+            btnRepeat.setImageDrawable(ContextCompat.getDrawable(NgheNhacActivity.this, R.drawable.ic_repeat));
+        }
+    }
+
+    private void checkShuffle() {
+        if (isShuffle == true) {
+
+            //Complete while shuffle
+            if (!isRepeat) {
+                mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        if (pos_shuff + 1 < songList.size()) {
+                            pos = shuff[pos_shuff + 1] - 1;
+                            pos_shuff++;
+                            BaiHat next = songList.get(pos);
+                            changeSelectedSong(pos);
+                            preparedSong(next);
+                        } else {
+                            pos = shuff[0] - 1;
+                            pos_shuff = 0;
+                            BaiHat next = songList.get(pos);
+                            changeSelectedSong(pos);
+                            preparedSong(next);
+                        }
+                    }
+                });
+            }
+
+            //Next while shuffle
+            btnNext.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mPlayer != null){
+                        if(pos_shuff + 1 < shuff.length){
+                            pos = shuff[pos_shuff+1];
+                            pos_shuff++;
+                            BaiHat next = songList.get(pos);
+                            changeSelectedSong(pos);
+                            preparedSong(next);
+                        }else{
+                            pos = shuff[0];
+                            pos_shuff = 0;
+                            BaiHat next = songList.get(pos);
+                            changeSelectedSong(pos);
+                            preparedSong(next);
+                        }
+                    }
+                }
+            });
+
+            //Pre while shuffle
+            btnPre.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mPlayer != null){
+                        if(pos_shuff - 1 >= 0){
+                            pos=shuff[pos_shuff-1];
+                            pos_shuff--;
+                            BaiHat previous = songList.get(pos);
+                            changeSelectedSong(pos);
+                            preparedSong(previous);
+                        }else{
+                            pos = shuff[shuff.length-1];
+                            pos_shuff = shuff.length-1;
+                            BaiHat previous = songList.get(pos);
+                            changeSelectedSong(pos);
+                            preparedSong(previous);
+                        }
+
+                    }
+                }
+            });
+            btnShuffle.setImageDrawable(ContextCompat.getDrawable(NgheNhacActivity.this, R.drawable.ic_shuffle_black));
+        } else {
+            //Complete while unshuffle
+            if (!isRepeat) {
+                mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        if(pos + 1 < songList.size()){
+                            BaiHat next = songList.get(pos + 1);
+                            changeSelectedSong(pos+1);
+                            preparedSong(next);
+                        }else{
+                            BaiHat next = songList.get(0);
+                            changeSelectedSong(0);
+                            preparedSong(next);
+                        }
+                    }
+                });
+            }
+            next();
+            previous();
+            btnShuffle.setImageDrawable(ContextCompat.getDrawable(NgheNhacActivity.this, R.drawable.ic_shuffle));
+        }
+    }
+
+    private void repeat() {
+        btnRepeat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isRepeat == false) {
+                    isRepeat = true;
+                    SharedManagers.getInstance().putRepeat(isRepeat);
+                    checkRepeat();
+                } else {
+                    isRepeat = false;
+                    SharedManagers.getInstance().putRepeat(isRepeat);
+                    checkRepeat();
+                }
+                checkShuffle();
+            }
+        });
+    }
+
+    private void shuffle() {
+        btnShuffle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isShuffle == false) {
+                    isShuffle =true;
+                    SharedManagers.getInstance().putSuff(isShuffle);
+                    checkShuffle();
+                } else {
+                    isShuffle=false;
+                    SharedManagers.getInstance().putSuff(isShuffle);
+                    checkShuffle();
+                }
             }
         });
     }

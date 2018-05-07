@@ -62,7 +62,11 @@ public class AddToPlaylistAdapter extends BaseAdapter {
 
         holder.textViewTenpl.setText(pl.getTen());
         holder.textViewsl.setText(pl.getListBh().size()+" bài hát");
-        Picasso.with(context).load(pl.getListBh().get(0).getArtworkUrl()).placeholder(R.drawable.music_placeholder).into(holder.imgPlaylist);
+        if (pl.getListBh().size() == 0) {
+            holder.imgPlaylist.setImageResource(R.drawable.music_placeholder);
+        } else {
+            Picasso.with(context).load(pl.getListBh().get(0).getArtworkUrl()).placeholder(R.drawable.music_placeholder).into(holder.imgPlaylist);
+        }
 
         return view;
     }
