@@ -1,6 +1,7 @@
 package vanhy.com.imusic;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -12,10 +13,17 @@ import android.support.design.widget.BottomSheetDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,9 +35,13 @@ import org.w3c.dom.Text;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import vanhy.com.imusic.SQLite.SQLite;
 import vanhy.com.imusic.Utility.Randomize;
 import vanhy.com.imusic.Utility.Utility;
+import vanhy.com.imusic.adapter.AddToPlaylistAdapter;
+import vanhy.com.imusic.fragment.PlayListFragment;
 import vanhy.com.imusic.model.BaiHat;
+import vanhy.com.imusic.model.Playlist;
 import vanhy.com.imusic.sharedpreference.SharedManagers;
 
 public class NgheNhacActivity extends AppCompatActivity{
@@ -46,6 +58,8 @@ public class NgheNhacActivity extends AppCompatActivity{
     private ImageView imageView;
     private ImageButton btnRepeat;
     private ImageButton btnShuffle;
+    private ImageButton btnFavorite;
+    private ProgressBar progress;
 
     private ArrayList<BaiHat> songList;
     private int pos;
@@ -54,6 +68,8 @@ public class NgheNhacActivity extends AppCompatActivity{
     private long currentSongLength;
     private boolean isShuffle;
     private boolean isRepeat;
+    private boolean isFavorite;
+    private ArrayList<BaiHat> listFavorite;
 
     private MediaPlayer mPlayer;
     private Animation animation;
@@ -67,9 +83,17 @@ public class NgheNhacActivity extends AppCompatActivity{
         SharedManagers.init(this);
         isShuffle = SharedManagers.getInstance().getSuff();
         isRepeat = SharedManagers.getInstance().getRepeat();
+        listFavorite = (ArrayList<BaiHat>) SharedManagers.getInstance().getListTrack();
+        isFavorite = false;
         pos = getIntent().getIntExtra("position",0);
         pos_shuff=0;
         shuff = Randomize.getShuffle(songList.size());
+        for (int i = 0; i < listFavorite.size(); i++) {
+            if (songList.get(pos).getStreamUrl().equals(listFavorite.get(i).getStreamUrl())) {
+                isFavorite = true;
+                break;
+            }
+        }
         mPlayer = new MediaPlayer();
         mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -86,9 +110,9 @@ public class NgheNhacActivity extends AppCompatActivity{
         textTenbh.setText(songList.get(pos).getTitle());
         textKetthuc.setText(Utility.convertDuration((long)currentSongLength));
         try {
+            progress.setVisibility(View.VISIBLE);
             mPlayer.setDataSource(stream);
             mPlayer.prepareAsync();
-            imageView.startAnimation(animation);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -97,6 +121,7 @@ public class NgheNhacActivity extends AppCompatActivity{
         shuffle();
         handleSeekbar();
         clickMore();
+        favorite();
     }
 
     private void initView() {
@@ -113,6 +138,8 @@ public class NgheNhacActivity extends AppCompatActivity{
         imageView = (ImageView) findViewById(R.id.imageView);
         btnRepeat = (ImageButton) findViewById(R.id.btnImageRepeat);
         btnShuffle = (ImageButton) findViewById(R.id.btnImageShuffle);
+        progress = (ProgressBar) findViewById(R.id.pb_main_loader);
+        btnFavorite = (ImageButton) findViewById(R.id.btnImageFavourite);
     }
 
     private void handleSeekbar(){
@@ -135,6 +162,24 @@ public class NgheNhacActivity extends AppCompatActivity{
 
             }
         });
+    }
+
+    private void favorite() {
+        btnFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedManagers.getInstance().addTrack(songList.get(pos));
+                btnFavorite.setImageDrawable(ContextCompat.getDrawable(NgheNhacActivity.this, R.drawable.ic_favorited));
+            }
+        });
+    }
+
+    private void checkFavorite() {
+        if (isFavorite == true) {
+            btnFavorite.setImageDrawable(ContextCompat.getDrawable(NgheNhacActivity.this, R.drawable.ic_favorited));
+        } else {
+            btnFavorite.setImageDrawable(ContextCompat.getDrawable(NgheNhacActivity.this, R.drawable.ic_favorite_bound));
+        }
     }
 
     private void checkRepeat() {
@@ -301,6 +346,7 @@ public class NgheNhacActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 if(mPlayer.isPlaying() && mPlayer != null){
+
                     btnPlay.setImageDrawable(ContextCompat.getDrawable(NgheNhacActivity.this, R.drawable.ic_play));
                     mPlayer.pause();
                 }else{
@@ -352,17 +398,87 @@ public class NgheNhacActivity extends AppCompatActivity{
         btnImageMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BottomSheetDialog bottomdialog = new BottomSheetDialog(NgheNhacActivity.this);
+                final BottomSheetDialog bottomdialog = new BottomSheetDialog(NgheNhacActivity.this);
                 View view = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
-                View view_dialog = getLayoutInflater().inflate(R.layout.add_to_playlist_dialog, null);
                 ImageView imgBaihat = (ImageView) view.findViewById(R.id.imageView_BoS);
                 TextView txtTenbh = (TextView) view.findViewById(R.id.textViewTenBH_BoS);
                 TextView textView = (TextView) view.findViewById(R.id.textViewTenCS_BoS);
+                LinearLayout addtoplaylist = (LinearLayout) view.findViewById(R.id.addToPlaylist);
                 Picasso.with(NgheNhacActivity.this).load(songList.get(pos).getArtworkUrl()).placeholder(R.drawable.music_placeholder).into(imgBaihat);
                 txtTenbh.setText(songList.get(pos).getTitle());
-                textTencs.setText(songList.get(pos).getArtist());
+                textView.setText(songList.get(pos).getArtist());
                 bottomdialog.setContentView(view);
                 bottomdialog.show();
+                addtoplaylist.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final Dialog dialogadd = new Dialog(NgheNhacActivity.this);
+                        dialogadd.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        View temp1 = getLayoutInflater().inflate(R.layout.add_to_playlist_dialog, null);
+                        ListView listView = (ListView) temp1.findViewById(R.id.listViewPlaylist);
+                        final ArrayList<Playlist> listPl = SQLite.getAllPlaylist(NgheNhacActivity.this);
+                        AddToPlaylistAdapter adapter = new AddToPlaylistAdapter(NgheNhacActivity.this, R.layout.add_to_playlist_item, listPl);
+                        listView.setAdapter(adapter);
+                        dialogadd.setContentView(temp1);
+                        dialogadd.show();
+                        bottomdialog.cancel();
+                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                if (SQLite.addSongToPlaylist(NgheNhacActivity.this, listPl.get(position).getId(), songList.get(pos))) {
+                                    OnAddedToDB onAddedToDB = PlayListFragment.getInstance();
+                                    onAddedToDB.onRefresh();
+                                    Toast.makeText(NgheNhacActivity.this, "Thêm vào playlist "+listPl.get(position).getTen()+" thành công", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(NgheNhacActivity.this, "Bài hát đã có trong "+listPl.get(position).getTen(), Toast.LENGTH_SHORT).show();
+                                }
+                                dialogadd.cancel();
+                            }
+                        });
+                        LinearLayout btnThempl = (LinearLayout) temp1.findViewById(R.id.btnThemPlaylist);
+                        btnThempl.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogadd.cancel();
+                                final Dialog dialog_add_pl = new Dialog(NgheNhacActivity.this);
+                                dialog_add_pl.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                View view_add_pl = getLayoutInflater().inflate(R.layout.add_play_list_dialog, null);
+                                dialog_add_pl.setContentView(view_add_pl);
+                                dialog_add_pl.show();
+                                Button btnThem = (Button) view_add_pl.findViewById(R.id.btnThemPlaylist);
+                                Button btnBoqua = (Button) view_add_pl.findViewById(R.id.btnBoqua);
+                                final EditText edtTenpl = (EditText) view_add_pl.findViewById(R.id.edtTenPlaylist);
+
+                                btnThem.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        String tenpl = edtTenpl.getText().toString();
+                                        if (!"".equals(tenpl)) {
+                                            if (!SQLite.checkPlaylistNameExist(NgheNhacActivity.this, tenpl)) {
+                                                ArrayList<BaiHat> arrBh = new ArrayList<BaiHat>();
+                                                arrBh.add(songList.get(pos));
+                                                SQLite.createPlaylist(NgheNhacActivity.this, tenpl, arrBh);
+                                                OnAddedToDB onAddedToDB = PlayListFragment.getInstance();
+                                                onAddedToDB.onRefresh();
+                                                Toast.makeText(NgheNhacActivity.this, "Thêm vào playlist thành công", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(NgheNhacActivity.this, "Playlist đã tồn tại", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                        dialog_add_pl.cancel();
+                                    }
+                                });
+
+                                btnBoqua.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialog_add_pl.cancel();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
             }
         });
     }
@@ -373,6 +489,8 @@ public class NgheNhacActivity extends AppCompatActivity{
             mp.reset();
         } else{
             mp.start();
+            progress.setVisibility(View.GONE);
+            imageView.startAnimation(animation);
             btnPlay.setImageDrawable(ContextCompat.getDrawable(NgheNhacActivity.this, R.drawable.ic_pause));
             final Handler mHandler = new Handler();
             this.runOnUiThread(new Runnable() {
@@ -402,6 +520,8 @@ public class NgheNhacActivity extends AppCompatActivity{
     }
 
     private void preparedSong(BaiHat song) {
+        progress.setVisibility(View.VISIBLE);
+        imageView.clearAnimation();
         currentSongLength = song.getDuration();
         textKetthuc.setText(Utility.convertDuration(song.getDuration()));
         textBatdau.setText("00:00");

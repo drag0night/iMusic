@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.BaiHatFragment">
 
     <!-- TODO: Update blank fragment layout -->
+    <ProgressBar
+        android:id="@+id/pb_main_loader"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:visibility="visible"
+        android:progressDrawable="@drawable/circular_progress_bar"
+        android:layout_centerInParent="true"/>
+
     <ListView
         android:id="@+id/listViewBaiHat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></ListView>
 
-</FrameLayout>
+</RelativeLayout>

@@ -134,10 +134,14 @@ public class PlaylistAdapter extends BaseAdapter {
                             public void onClick(View v) {
                                 String tenpl = edtTenpl.getText().toString();
                                 if (!"".equals(tenpl)) {
-                                    if (SQLite.editNamePlaylist(context, pl.getId(), tenpl)) {
-                                        OnAddedToDB onAddedToDB = PlayListFragment.getInstance();
-                                        onAddedToDB.onRefresh();
-                                        Toast.makeText(context, "Đã sửa tên playlist", Toast.LENGTH_SHORT).show();
+                                    if (SQLite.checkPlaylistNameExist(context, tenpl)) {
+                                        Toast.makeText(context, "Playlist đã tồn tại", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        if (SQLite.editNamePlaylist(context, pl.getId(), tenpl)) {
+                                            OnAddedToDB onAddedToDB = PlayListFragment.getInstance();
+                                            onAddedToDB.onRefresh();
+                                            Toast.makeText(context, "Đã sửa tên playlist", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
                                 }
                                 dialog_edit.cancel();

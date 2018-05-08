@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -30,6 +31,7 @@ public class AddSongToNewPlaylistActivity extends AppCompatActivity {
     private ChonBaiHatAdapter adapter;
     private static final String TAG = "APP";
     private OnAddedToDB onAddedToDB;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class AddSongToNewPlaylistActivity extends AppCompatActivity {
     private void initView() {
         listView = (ListView) findViewById(R.id.listViewBaiHat);
         btnDone = (ImageButton) findViewById(R.id.btnImageDone);
+        progressBar = (ProgressBar) findViewById(R.id.pb_main_loader);
     }
 
     private void done() {
@@ -64,11 +67,13 @@ public class AddSongToNewPlaylistActivity extends AppCompatActivity {
     }
 
     public void getSongList(String query){
+        progressBar.setVisibility(View.VISIBLE);
         RequestQueue queue = VolleySingleton.getInstance(this).getRequestQueue();
         SoundcloudApiRequest request = new SoundcloudApiRequest(queue);
         request.getSongList(query, new SoundcloudApiRequest.SoundcloudInterface() {
             @Override
             public void onSuccess(ArrayList<BaiHat> songs) {
+                progressBar.setVisibility(View.GONE);
                 songList.clear();
                 songList.addAll(songs);
                 adapter.notifyDataSetChanged();
@@ -76,6 +81,7 @@ public class AddSongToNewPlaylistActivity extends AppCompatActivity {
 
             @Override
             public void onError(String message) {
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(AddSongToNewPlaylistActivity.this, message, Toast.LENGTH_SHORT).show();
             }
         });

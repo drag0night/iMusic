@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import vanhy.com.imusic.SQLite.SQLite;
 import vanhy.com.imusic.adapter.PagerMainAdapter;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,6 +22,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (!SQLite.checkDbExist(this)) {
+            SQLite.createDatabase(this);
+        }
         btnImageMore = (ImageButton) findViewById(R.id.btnImageMore);
         tabMain = (TabLayout) findViewById(R.id.tabLayoutMain);
         tabMain.addTab(tabMain.newTab().setIcon(R.drawable.ic_home));

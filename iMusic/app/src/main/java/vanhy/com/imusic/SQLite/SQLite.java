@@ -90,12 +90,11 @@ public class SQLite {
         ArrayList<Playlist> result = new ArrayList<Playlist>();
         try {
             SQLiteDatabase db = context.openOrCreateDatabase(db_name, context.MODE_PRIVATE,null);
-            Cursor cs = db.rawQuery("SELECT p.id,p.title,s.id,s.title,s.artist,s.artworkUrl,s.duration,s.streamUri,s.playbackCount FROM playlist p, song s WHERE p.id = s.id_playlist", null);
             Cursor cs_pl = db.rawQuery("SELECT * FROM playlist", null);
             while (cs_pl.moveToNext()) {
                 int id_pl = cs_pl.getInt(0);
                 String playlist_title = cs_pl.getString(1);
-                cs = db.rawQuery("SELECT * FROM song", null);
+                Cursor cs = db.rawQuery("SELECT * FROM song", null);
                 int kt = 0;
                 while (cs.moveToNext()) {
                     int song_id = cs.getInt(0);

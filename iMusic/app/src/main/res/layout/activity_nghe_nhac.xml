@@ -7,6 +7,14 @@
     tools:context=".NgheNhacActivity"
     android:background="@mipmap/background_playlist">
 
+    <ProgressBar
+        android:id="@+id/pb_main_loader"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:visibility="gone"
+        android:progressDrawable="@drawable/circular_progress_bar"
+        android:layout_centerInParent="true"/>
+
     <RelativeLayout android:id="@+id/layout_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

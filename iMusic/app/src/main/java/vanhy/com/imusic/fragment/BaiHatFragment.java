@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ public class BaiHatFragment extends Fragment {
     private TextView textTenbh, textCasi;
     private ImageView imgBh;
     private static final BaiHatFragment instance = new BaiHatFragment();
+    private ProgressBar progressBar;
 
     public BaiHatFragment() {
         // Required empty public constructor
@@ -60,9 +62,10 @@ public class BaiHatFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_bai_hat, container, false);
         context = getActivity();
+        listview = (ListView) view.findViewById(R.id.listViewBaiHat);
+        progressBar = (ProgressBar) view.findViewById(R.id.pb_main_loader);
         songList = new ArrayList<BaiHat>();
         getSongList("Đức Phúc");
-        listview = (ListView) view.findViewById(R.id.listViewBaiHat);
         adapter = new BaiHatAdapter(context, R.layout.playlist_item, songList);
         listview.setAdapter(adapter);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -89,11 +92,13 @@ public class BaiHatFragment extends Fragment {
     }
 
     public void getSongList(String query){
+        progressBar.setVisibility(View.VISIBLE);
         RequestQueue queue = VolleySingleton.getInstance(context).getRequestQueue();
         SoundcloudApiRequest request = new SoundcloudApiRequest(queue);
         request.getSongList(query, new SoundcloudApiRequest.SoundcloudInterface() {
             @Override
             public void onSuccess(ArrayList<BaiHat> songs) {
+                progressBar.setVisibility(View.GONE);
                 songList.clear();
                 songList.addAll(songs);
                 adapter.notifyDataSetChanged();
@@ -101,6 +106,7 @@ public class BaiHatFragment extends Fragment {
 
             @Override
             public void onError(String message) {
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
             }
         });
