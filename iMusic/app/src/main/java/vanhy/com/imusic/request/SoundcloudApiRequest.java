@@ -33,7 +33,6 @@ public class SoundcloudApiRequest {
     private RequestQueue queue;
     private static final String URL = "http://api.soundcloud.com/tracks?filter=public&limit=100&client_id="+ Config.CLIENT_ID;
     private static final String URLPL = "http://api.soundcloud.com/playlists?client_id=a7Ucuq0KY8Ksn8WzBG6wj4x6pcId6BpU&limit=10";
-
     private static final String TAG = "APP";
 
     public SoundcloudApiRequest(RequestQueue queue) {
@@ -104,14 +103,14 @@ public class SoundcloudApiRequest {
     public void getAlbumList(String query, final SoundcloudInterface callback){
 
         String url = URLPL;
-//        if(query.length() > 0){
-//            try {
-//                query = URLEncoder.encode(query, "UTF-8");
-//                url = URLPL + "&q=" + query;
-//            } catch (UnsupportedEncodingException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        if(query.length() > 0){
+            try {
+                query = URLEncoder.encode(query, "UTF-8");
+                url = URLPL + "&q=" + query;
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
 
         Log.d(TAG, "getAlbumList: " + url);
 
@@ -128,6 +127,8 @@ public class SoundcloudApiRequest {
                             long id = songObject.getLong("id");
                             String title = songObject.getString("title");
                             String artworkUrl = songObject.getString("artwork_url");
+
+                            //JSONArray tracks=songObject.getJSONArray("tracks");
                             long track_count = songObject.getLong("track_count");
                             JSONObject user = songObject.getJSONObject("user");
                             String artist = user.getString("username");
@@ -162,7 +163,7 @@ public class SoundcloudApiRequest {
 
     public void getAlbum(String query, final SoundcloudInterface callback){
 
-        String url = "http://api.soundcloud.com/playlists/"+query+"?client_id="+Config.CLIENT_ID;
+        String url = "http://api.soundcloud.com/playlists/"+query+"?client_id="+ Config.CLIENT_ID;
 
 
         Log.d(TAG, "getAlbum: " + url);
@@ -209,6 +210,60 @@ public class SoundcloudApiRequest {
         });
 
         queue.add(request);
+
+    }
+
+    public void getTopMusic(String query, final SoundcloudInterface callback){
+
+        String url = "https://api-v2.soundcloud.com/charts?kind=top&genre=soundcloud%3Agenres%3A"+query+"&client_id=a7Ucuq0KY8Ksn8WzBG6wj4x6pcId6BpU&limit=6&offset=0";
+
+
+        Log.d(TAG, "getTopMusic: " + url);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d(TAG, "onResponse: " + response);
+                try {
+                    JSONArray arr=response.getJSONArray("collection");
+                    ArrayList<BaiHat> songs = new ArrayList<>();
+                    if(arr.length() > 0){
+                        for (int i = 0; i < arr.length() ; i++) {
+                            JSONObject item = arr.getJSONObject(i);
+                            JSONObject songObject = item.getJSONObject("track");
+                            long id = songObject.getLong("id");
+                            String title = songObject.getString("title");
+                            String artworkUrl = songObject.getString("artwork_url");
+                            String streamUrl = songObject.getString("uri")+"/stream";
+                            Log.d(TAG, "url: " + streamUrl);
+                            long duration = songObject.getLong("duration");
+                            int playbackCount = songObject.has("playback_count") ? songObject.getInt("playback_count") : 0;
+                            JSONObject user = songObject.getJSONObject("user");
+                            String artist = user.getString("username");
+                            BaiHat song = new BaiHat(id, title, artist, artworkUrl, duration, streamUrl, playbackCount);
+                            songs.add(song);
+                        }
+
+                        callback.onSuccess(songs);
+
+                    }else{
+                        callback.onError("Không tìm thấy playlist nào");
+                    }
+                } catch (JSONException e) {
+                    Log.d(TAG, "onResponse: " + e.getMessage());
+                    callback.onError("Không kết nối được server");
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "onResponse: " + error.getMessage());
+                callback.onError("Không kết nối được server");
+            }
+        });
+
+        queue.add(request);
+
 
     }
 

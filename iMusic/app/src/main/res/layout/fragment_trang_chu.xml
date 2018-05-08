@@ -51,7 +51,7 @@
 
                 android:gravity="center_vertical"
                 android:paddingLeft="20dp"
-                android:text="Song Hot"
+                android:text="Hot Pop"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="20sp"
                 tools:textColor="@color/colorPrimaryDark" />
@@ -61,6 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -68,7 +69,7 @@
 
                 android:gravity="center_vertical"
                 android:paddingLeft="20dp"
-                android:text="Song Hot"
+                android:text="Hot Rock"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="20sp"
                 tools:textColor="@color/colorPrimaryDark" />
@@ -78,6 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -85,7 +87,7 @@
 
                 android:gravity="center_vertical"
                 android:paddingLeft="20dp"
-                android:text="Song Hot"
+                android:text="Hot Country"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="20sp"
                 tools:textColor="@color/colorPrimaryDark" />
@@ -95,6 +97,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -102,7 +105,7 @@
 
                 android:gravity="center_vertical"
                 android:paddingLeft="20dp"
-                android:text="Song Hot"
+                android:text="Hot Dance EDM"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="20sp"
                 tools:textColor="@color/colorPrimaryDark" />

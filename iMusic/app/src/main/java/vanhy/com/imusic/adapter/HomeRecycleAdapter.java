@@ -1,6 +1,7 @@
 package vanhy.com.imusic.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,20 +9,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import vanhy.com.imusic.NgheNhacActivity;
 import vanhy.com.imusic.R;
+import vanhy.com.imusic.model.BaiHat;
 
 public class HomeRecycleAdapter extends RecyclerView.Adapter {
-    private ArrayList<String> personNames;
-    private ArrayList<Integer> personImages;
+    private ArrayList<BaiHat> personNames;
     private Context context;
-    public HomeRecycleAdapter(Context context, ArrayList<String> personNames, ArrayList<Integer> personImages) {
+    public HomeRecycleAdapter(Context context, ArrayList<BaiHat> personNames) {
         this.context = context;
         this.personNames = personNames;
-        this.personImages = personImages;
     }
 
     @Override
@@ -36,14 +38,16 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder hold, final int position) {
         MyViewHolder holder=(MyViewHolder)hold;
-        holder.name.setText(personNames.get(position));
-        holder.image.setImageResource(personImages.get(position));
+        holder.name.setText(personNames.get(position).getTitle());
+        Picasso.with(context).load(personNames.get(position).getArtworkUrl()).placeholder(R.mipmap.ducphuc).into(holder.image);
         // implement setOnClickListener event on item view.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // display a toast with person name on item click
-                Toast.makeText(context, personNames.get(position).toString(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, NgheNhacActivity.class);
+                intent.putExtra("songList", personNames);
+                intent.putExtra("position", position);
+                context.startActivity(intent);
             }
         });
     }

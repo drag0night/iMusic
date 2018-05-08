@@ -1,6 +1,5 @@
 package vanhy.com.imusic;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +12,6 @@ import com.android.volley.RequestQueue;
 import java.util.ArrayList;
 
 import vanhy.com.imusic.SQLite.SQLite;
-import vanhy.com.imusic.adapter.AddToPlaylistAdapter;
 import vanhy.com.imusic.adapter.ChonBaiHatAdapter;
 import vanhy.com.imusic.fragment.PlayListFragment;
 import vanhy.com.imusic.model.BaiHat;
