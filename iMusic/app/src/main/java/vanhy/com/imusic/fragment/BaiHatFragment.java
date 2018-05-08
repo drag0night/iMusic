@@ -7,12 +7,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.support.design.widget.BottomSheetDialog;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -97,10 +94,10 @@ public class BaiHatFragment extends Fragment {
         SoundcloudApiRequest request = new SoundcloudApiRequest(queue);
         request.getSongList(query, new SoundcloudApiRequest.SoundcloudInterface() {
             @Override
-            public void onSuccess(ArrayList<BaiHat> songs) {
+            public void onSuccess( Object songs) {
                 progressBar.setVisibility(View.GONE);
                 songList.clear();
-                songList.addAll(songs);
+                songList.addAll((ArrayList<BaiHat>)songs);
                 adapter.notifyDataSetChanged();
             }
 

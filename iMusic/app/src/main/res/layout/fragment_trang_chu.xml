@@ -3,12 +3,124 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.TrangChuFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:scrollbars="none">
+    <!-- TODO: Update blank fragment layout -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+
+                android:weightSum="1">
+
+                <Button
+                    android:id="@+id/button"
+                    style="@style/Widget.AppCompat.Button"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="0"
+                    android:background="@drawable/ic_search" />
+
+                <Button
+                    android:id="@+id/search_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    android:text="    Tìm kiếm bài hát, playlist, ca sĩ, album"
+                    android:textAllCaps="false" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="0"
+
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:text="Hot Pop"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                tools:textColor="@color/colorPrimaryDark" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="0"
+
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:text="Hot Rock"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                tools:textColor="@color/colorPrimaryDark" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="0"
+
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:text="Hot Country"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                tools:textColor="@color/colorPrimaryDark" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="0"
+
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:text="Hot Dance EDM"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                tools:textColor="@color/colorPrimaryDark" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+
 
 </FrameLayout>

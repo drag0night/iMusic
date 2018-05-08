@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import vanhy.com.imusic.fragment.CaNhanFragment;
-import vanhy.com.imusic.fragment.TrangChuFragment;
+import vanhy.com.imusic.fragment.HomeFragment;
 
 public class PagerMainAdapter extends FragmentStatePagerAdapter{
     private static int numOfTabs;
@@ -19,7 +19,7 @@ public class PagerMainAdapter extends FragmentStatePagerAdapter{
     public Fragment getItem(int position) {
         switch (position) {
             case 0: {
-                return new TrangChuFragment();
+                return new HomeFragment();
             }
 
             case 1: {

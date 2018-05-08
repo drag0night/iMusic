@@ -1,33 +1,46 @@
 package vanhy.com.imusic.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.support.design.widget.BottomSheetDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import vanhy.com.imusic.OnAddedToDB;
 import vanhy.com.imusic.R;
+import vanhy.com.imusic.SQLite.SQLite;
+import vanhy.com.imusic.fragment.PlayListFragment;
 import vanhy.com.imusic.model.Album;
+import vanhy.com.imusic.model.Playlist;
 
 public class AlbumAdapter extends BaseAdapter {
 
     private Context context;
-    private int layout;
-    private ArrayList<Album> listalbum;
+    private ArrayList<Album> listPL;
 
-    public AlbumAdapter(Context context, int layout, ArrayList<Album> listalbum) {
+    public AlbumAdapter(Context context, ArrayList<Album> listPL) {
         this.context = context;
-        this.layout = layout;
-        this.listalbum = listalbum;
+        this.listPL = listPL;
     }
 
     @Override
     public int getCount() {
-        return listalbum.size();
+        return listPL.size();
     }
 
     @Override
@@ -41,31 +54,44 @@ public class AlbumAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup parent) {
-        ViewHolder holder;
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+    public View getView(final int i, View view, ViewGroup parent) {
+        final ViewHolder holder;
+        final ImageButton btn;
+        final LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
 
         if (view == null) {
-            view = inflater.inflate(layout, null);
+            view = inflater.inflate(R.layout.album_item, null);
+
             holder = new ViewHolder();
-            holder.textViewTenalbum = (TextView) view.findViewById(R.id.textViewTenAlbum);
-            holder.textViewsl = (TextView) view.findViewById(R.id.textViewSL);
+            holder.textViewTenPL = (TextView) view.findViewById(R.id.textViewTenPL);
+            holder.textViewsl = (TextView) view.findViewById(R.id.textViewSL_PL);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
         }
+        btn = (ImageButton) view.findViewById(R.id.btnImageMore_BH);
+        final Album pl = listPL.get(i);
 
-        Album ab = listalbum.get(i);
+        holder.textViewTenPL.setText(pl.getTitle());
+        holder.textViewsl.setText(pl.getTrachCount()+" bài hát");
+        holder.imgPlaylist = (ImageView) view.findViewById(R.id.albumicon);
+        Picasso.with(context).load(pl.getArtworkUrl()).placeholder(R.drawable.music_placeholder).into(holder.imgPlaylist);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        holder.textViewTenalbum.setText(ab.getTen());
-        holder.textViewsl.setText(ab.getSl()+" bài hát");
+            }
+        });
 
         return view;
     }
 
     private class ViewHolder {
-        TextView textViewTenalbum;
-        TextView textViewsl;
+
+        private TextView textViewTenPL;
+        private TextView textViewsl;
+        private ImageView imgPlaylist;
+
     }
 
 }

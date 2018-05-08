@@ -1,6 +1,5 @@
 package vanhy.com.imusic;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,7 +13,6 @@ import com.android.volley.RequestQueue;
 import java.util.ArrayList;
 
 import vanhy.com.imusic.SQLite.SQLite;
-import vanhy.com.imusic.adapter.AddToPlaylistAdapter;
 import vanhy.com.imusic.adapter.ChonBaiHatAdapter;
 import vanhy.com.imusic.fragment.PlayListFragment;
 import vanhy.com.imusic.model.BaiHat;
@@ -72,10 +70,10 @@ public class AddSongToNewPlaylistActivity extends AppCompatActivity {
         SoundcloudApiRequest request = new SoundcloudApiRequest(queue);
         request.getSongList(query, new SoundcloudApiRequest.SoundcloudInterface() {
             @Override
-            public void onSuccess(ArrayList<BaiHat> songs) {
+            public void onSuccess(Object songs) {
                 progressBar.setVisibility(View.GONE);
                 songList.clear();
-                songList.addAll(songs);
+                songList.addAll((ArrayList<BaiHat>)songs);
                 adapter.notifyDataSetChanged();
             }
 
