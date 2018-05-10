@@ -20,7 +20,6 @@ public class HistoryLoader {
         return historyList;
     }
 
-
     public void addHistory(String value,Context context){
         if(historyList==null) return;
         if(!historyList.contains(value)){

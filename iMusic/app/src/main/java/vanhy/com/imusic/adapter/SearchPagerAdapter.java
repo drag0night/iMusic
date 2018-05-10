@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import vanhy.com.imusic.fragment.CaSiFragment;
 import vanhy.com.imusic.fragment.SearchAlbumFragment;
 import vanhy.com.imusic.fragment.SearchResultFragment;
 
@@ -42,14 +41,9 @@ public class SearchPagerAdapter extends FragmentStatePagerAdapter {
                 tab1.setArguments(bundle);
                 //tab.adapter.notifyDataSetChanged();
                 return tab1;
-            case 2:
-                //tab.setAdapter("singer");
-                break;
-            case 3:
-                //tab.setAdapter("album");
-                break;
+            default:
+                return null;
         }
-        return new CaSiFragment();
     }
 
     @Override

@@ -24,7 +24,7 @@ public class HomeFragment extends Fragment {
         frag.setHomeFragment(this);
         getFragmentManager().beginTransaction()
                 .replace(R.id.homelayout, frag)
-                .addToBackStack(null)
+                .disallowAddToBackStack()
                 .commit();
 
     }

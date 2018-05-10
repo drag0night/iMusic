@@ -19,8 +19,6 @@ public class SearchResultTabViewFragment extends Fragment {
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("BÀI HÁT"));
         tabLayout.addTab(tabLayout.newTab().setText("PLAYLIST"));
-        tabLayout.addTab(tabLayout.newTab().setText("CA SĨ"));
-        tabLayout.addTab(tabLayout.newTab().setText("ALBUM"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = view.findViewById(R.id.pager);

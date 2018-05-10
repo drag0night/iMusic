@@ -39,7 +39,7 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder hold, final int position) {
         MyViewHolder holder=(MyViewHolder)hold;
         holder.name.setText(personNames.get(position).getTitle());
-        Picasso.with(context).load(personNames.get(position).getArtworkUrl()).placeholder(R.mipmap.ducphuc).into(holder.image);
+        Picasso.with(context).load(personNames.get(position).getArtworkUrl()).placeholder(R.drawable.music_placeholder).into(holder.image);
         // implement setOnClickListener event on item view.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

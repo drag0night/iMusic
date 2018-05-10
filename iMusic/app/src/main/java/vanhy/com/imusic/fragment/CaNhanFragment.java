@@ -33,9 +33,9 @@ public class CaNhanFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_ca_nhan, container, false);
         TabLayout tab = (TabLayout) view.findViewById(R.id.tabLayoutCaNhan);
         tab.addTab(tab.newTab().setText("Bài Hát"));
-        tab.addTab(tab.newTab().setText("Playlist"));
-        tab.addTab(tab.newTab().setText("Ca Sĩ"));
         tab.addTab(tab.newTab().setText("Album"));
+        tab.addTab(tab.newTab().setText("Playlist"));
+        tab.addTab(tab.newTab().setText("Yêu thích"));
         tab.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewpager = (ViewPager) view.findViewById(R.id.viewPagerCaNhan);

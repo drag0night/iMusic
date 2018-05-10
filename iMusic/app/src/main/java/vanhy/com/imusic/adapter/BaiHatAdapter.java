@@ -26,6 +26,7 @@ import vanhy.com.imusic.AddSongToNewPlaylistActivity;
 import vanhy.com.imusic.OnAddedToDB;
 import vanhy.com.imusic.R;
 import vanhy.com.imusic.SQLite.SQLite;
+import vanhy.com.imusic.fragment.FavoriteFragment;
 import vanhy.com.imusic.fragment.PlayListFragment;
 import vanhy.com.imusic.model.BaiHat;
 import vanhy.com.imusic.model.Playlist;
@@ -93,6 +94,20 @@ public class BaiHatAdapter extends BaseAdapter {
                 dialog.setContentView(temp);
                 dialog.show();
                 LinearLayout btnAdd = (LinearLayout) temp.findViewById(R.id.addToPlaylist);
+                LinearLayout btnFavorite = (LinearLayout) temp.findViewById(R.id.addToFavorite);
+
+                btnFavorite.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (SQLite.addToFavorite(context, listBH.get(i))) {
+                            FavoriteFragment.getInstance().onRefresh();
+                        } else {
+                            Toast.makeText(context, "Đã có trong Yêu thích", Toast.LENGTH_SHORT).show();
+                        }
+                        dialog.cancel();
+                    }
+                });
+
                 btnAdd.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -142,8 +157,8 @@ public class BaiHatAdapter extends BaseAdapter {
                                                 ArrayList<BaiHat> arrBh = new ArrayList<BaiHat>();
                                                 arrBh.add(listBH.get(i));
                                                 SQLite.createPlaylist(context, tenpl, arrBh);
-                                                OnAddedToDB onAddedToDB = PlayListFragment.getInstance();
-                                                onAddedToDB.onRefresh();
+//                                                OnAddedToDB onAddedToDB = PlayListFragment.getInstance();
+//                                                onAddedToDB.onRefresh();
                                                 Toast.makeText(context, "Thêm vào playlist thành công", Toast.LENGTH_SHORT).show();
                                             } else {
                                                 Toast.makeText(context, "Playlist đã tồn tại", Toast.LENGTH_SHORT).show();

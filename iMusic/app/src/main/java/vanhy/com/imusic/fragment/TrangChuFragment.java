@@ -10,6 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -32,9 +36,12 @@ public class TrangChuFragment extends Fragment {
     private RecyclerView edmRV;
     private RecyclerView rockRV;
     private RecyclerView popRV;
+    private LinearLayout layout_home;
     private Activity context;
-    Button button;
-    Button editsearch;
+    private ImageButton button;
+    private Button editsearch;
+    private ProgressBar progress_load;
+
     private RecyclerView.Adapter countryA;
     private RecyclerView.Adapter edmA;
     private RecyclerView.Adapter rockA;
@@ -53,9 +60,11 @@ public class TrangChuFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         context=getActivity();
-        View view =inflater.inflate(R.layout.fragment_trang_chu, container, false);
-        button=view.findViewById(R.id.button);
-        editsearch=view.findViewById(R.id.search_button);
+        View view = inflater.inflate(R.layout.fragment_trang_chu, container, false);
+        button= (ImageButton) view.findViewById(R.id.buttonSearch);
+        editsearch= (Button) view.findViewById(R.id.search_button);
+        progress_load = (ProgressBar) view.findViewById(R.id.pb_main_loader);
+        layout_home = (LinearLayout) view.findViewById(R.id.layout_home);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             home.changeSearch();
@@ -66,13 +75,13 @@ public class TrangChuFragment extends Fragment {
             home.changeSearch();
             }
         });
-
         getSongList(Config.POP);
         getSongList(Config.ROCK);
         getSongList(Config.DANCEEDM);
         getSongList(Config.COUNTRY);
 
-
+        layout_home.setVisibility(View.GONE);
+        progress_load.setVisibility(View.VISIBLE);
         popL=new ArrayList<BaiHat>();
         rockL=new ArrayList<BaiHat>();
         edmL=new ArrayList<BaiHat>();
@@ -116,7 +125,6 @@ public class TrangChuFragment extends Fragment {
         request.getTopMusic(query, new SoundcloudApiRequest.SoundcloudInterface() {
             @Override
             public void onSuccess( Object songs) {
-
                 switch(query){
                     case Config.POP:
                         popL.clear();
@@ -139,10 +147,13 @@ public class TrangChuFragment extends Fragment {
                         countryA.notifyDataSetChanged();
                         break;
                 }
+                layout_home.setVisibility(View.VISIBLE);
+                progress_load.setVisibility(View.GONE);
             }
 
             @Override
             public void onError(String message) {
+                progress_load.setVisibility(View.GONE);
                 Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
             }
         });

@@ -19,11 +19,11 @@
 
         <Button
             android:id="@+id/search_button"
-            style="@style/Widget.AppCompat.Button"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_weight="0"
-            android:background="@drawable/ic_arrow_back" />
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/ic_back_black" />
 
         <android.support.v7.widget.SearchView
             android:id="@+id/search"

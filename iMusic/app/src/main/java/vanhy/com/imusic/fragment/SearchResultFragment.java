@@ -37,9 +37,6 @@ public class SearchResultFragment extends Fragment {
         String keyword= (String) bundle.getSerializable("keyword");
 
         filter(keyword);
-
-
-
         adapter= new BaiHatAdapter(getActivity(), R.layout.playlist_item,songList);
 
 
@@ -48,9 +45,8 @@ public class SearchResultFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(context, NgheNhacActivity.class);
-                intent.putExtra("song",songList.get(position));
                 intent.putExtra("songList", songList);
-                intent.putExtra("positon", position);
+                intent.putExtra("position", position);
                 startActivity(intent);
             }
         });

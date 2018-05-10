@@ -27,6 +27,7 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import vanhy.com.imusic.fragment.FavoriteFragment;
 
 import com.squareup.picasso.Picasso;
 
@@ -60,6 +61,7 @@ public class NgheNhacActivity extends AppCompatActivity{
     private ImageButton btnShuffle;
     private ImageButton btnFavorite;
     private ProgressBar progress;
+    private ImageButton btnBack;
 
     private ArrayList<BaiHat> songList;
     private int pos;
@@ -83,17 +85,12 @@ public class NgheNhacActivity extends AppCompatActivity{
         SharedManagers.init(this);
         isShuffle = SharedManagers.getInstance().getSuff();
         isRepeat = SharedManagers.getInstance().getRepeat();
-        listFavorite = (ArrayList<BaiHat>) SharedManagers.getInstance().getListTrack();
-        isFavorite = false;
+        isFavorite = true;
         pos = getIntent().getIntExtra("position",0);
         pos_shuff=0;
         shuff = Randomize.getShuffle(songList.size());
-        for (int i = 0; i < listFavorite.size(); i++) {
-            if (songList.get(pos).getStreamUrl().equals(listFavorite.get(i).getStreamUrl())) {
-                isFavorite = true;
-                break;
-            }
-        }
+        checkSongFavorite();
+        checkFavorite();
         mPlayer = new MediaPlayer();
         mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -122,6 +119,7 @@ public class NgheNhacActivity extends AppCompatActivity{
         handleSeekbar();
         clickMore();
         favorite();
+        back();
     }
 
     private void initView() {
@@ -140,6 +138,16 @@ public class NgheNhacActivity extends AppCompatActivity{
         btnShuffle = (ImageButton) findViewById(R.id.btnImageShuffle);
         progress = (ProgressBar) findViewById(R.id.pb_main_loader);
         btnFavorite = (ImageButton) findViewById(R.id.btnImageFavourite);
+        btnBack = (ImageButton) findViewById(R.id.btnImageBack);
+    }
+
+    private void back() {
+        btnBack.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     private void handleSeekbar(){
@@ -168,8 +176,17 @@ public class NgheNhacActivity extends AppCompatActivity{
         btnFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedManagers.getInstance().addTrack(songList.get(pos));
-                btnFavorite.setImageDrawable(ContextCompat.getDrawable(NgheNhacActivity.this, R.drawable.ic_favorited));
+                if (isFavorite == true) {
+                    isFavorite = false;
+                    checkFavorite();
+                    SQLite.deleteTrackInFavorite(NgheNhacActivity.this, songList.get(pos));
+                    FavoriteFragment.getInstance().onRefresh();
+                } else {
+                    isFavorite = true;
+                    checkFavorite();
+                    SQLite.addToFavorite(NgheNhacActivity.this, songList.get(pos));
+                    FavoriteFragment.getInstance().onRefresh();
+                }
             }
         });
     }
@@ -180,6 +197,17 @@ public class NgheNhacActivity extends AppCompatActivity{
         } else {
             btnFavorite.setImageDrawable(ContextCompat.getDrawable(NgheNhacActivity.this, R.drawable.ic_favorite_bound));
         }
+    }
+
+    private void checkSongFavorite() {
+        listFavorite = SQLite.getAllFavorite(this);
+        for(int i = 0; i< listFavorite.size(); i++) {
+            if (songList.get(pos).getStreamUrl().equals(listFavorite.get(i).getStreamUrl())) {
+                isFavorite = true;
+                return;
+            }
+        }
+        isFavorite = false;
     }
 
     private void checkRepeat() {
@@ -243,13 +271,13 @@ public class NgheNhacActivity extends AppCompatActivity{
                 public void onClick(View v) {
                     if(mPlayer != null){
                         if(pos_shuff + 1 < shuff.length){
-                            pos = shuff[pos_shuff+1];
+                            pos = shuff[pos_shuff+1]-1;
                             pos_shuff++;
                             BaiHat next = songList.get(pos);
                             changeSelectedSong(pos);
                             preparedSong(next);
                         }else{
-                            pos = shuff[0];
+                            pos = shuff[0]-1;
                             pos_shuff = 0;
                             BaiHat next = songList.get(pos);
                             changeSelectedSong(pos);
@@ -265,13 +293,13 @@ public class NgheNhacActivity extends AppCompatActivity{
                 public void onClick(View v) {
                     if(mPlayer != null){
                         if(pos_shuff - 1 >= 0){
-                            pos=shuff[pos_shuff-1];
+                            pos=shuff[pos_shuff-1]-1;
                             pos_shuff--;
                             BaiHat previous = songList.get(pos);
                             changeSelectedSong(pos);
                             preparedSong(previous);
                         }else{
-                            pos = shuff[shuff.length-1];
+                            pos = shuff[shuff.length-1]-1;
                             pos_shuff = shuff.length-1;
                             BaiHat previous = songList.get(pos);
                             changeSelectedSong(pos);
@@ -426,8 +454,8 @@ public class NgheNhacActivity extends AppCompatActivity{
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                 if (SQLite.addSongToPlaylist(NgheNhacActivity.this, listPl.get(position).getId(), songList.get(pos))) {
-                                    OnAddedToDB onAddedToDB = PlayListFragment.getInstance();
-                                    onAddedToDB.onRefresh();
+//                                    OnAddedToDB onAddedToDB = PlayListFragment.getInstance();
+//                                    onAddedToDB.onRefresh();
                                     Toast.makeText(NgheNhacActivity.this, "Thêm vào playlist "+listPl.get(position).getTen()+" thành công", Toast.LENGTH_SHORT).show();
                                 } else {
                                     Toast.makeText(NgheNhacActivity.this, "Bài hát đã có trong "+listPl.get(position).getTen(), Toast.LENGTH_SHORT).show();
@@ -458,8 +486,8 @@ public class NgheNhacActivity extends AppCompatActivity{
                                                 ArrayList<BaiHat> arrBh = new ArrayList<BaiHat>();
                                                 arrBh.add(songList.get(pos));
                                                 SQLite.createPlaylist(NgheNhacActivity.this, tenpl, arrBh);
-                                                OnAddedToDB onAddedToDB = PlayListFragment.getInstance();
-                                                onAddedToDB.onRefresh();
+//                                                OnAddedToDB onAddedToDB = PlayListFragment.getInstance();
+//                                                onAddedToDB.onRefresh();
                                                 Toast.makeText(NgheNhacActivity.this, "Thêm vào playlist thành công", Toast.LENGTH_SHORT).show();
                                             } else {
                                                 Toast.makeText(NgheNhacActivity.this, "Playlist đã tồn tại", Toast.LENGTH_SHORT).show();
@@ -521,6 +549,8 @@ public class NgheNhacActivity extends AppCompatActivity{
 
     private void preparedSong(BaiHat song) {
         progress.setVisibility(View.VISIBLE);
+        checkSongFavorite();
+        checkFavorite();
         imageView.clearAnimation();
         currentSongLength = song.getDuration();
         textKetthuc.setText(Utility.convertDuration(song.getDuration()));

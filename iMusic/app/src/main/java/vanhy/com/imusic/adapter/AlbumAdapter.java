@@ -7,12 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ import vanhy.com.imusic.R;
 import vanhy.com.imusic.SQLite.SQLite;
 import vanhy.com.imusic.fragment.PlayListFragment;
 import vanhy.com.imusic.model.Album;
+import vanhy.com.imusic.model.BaiHat;
 import vanhy.com.imusic.model.Playlist;
 
 public class AlbumAdapter extends BaseAdapter {
@@ -76,13 +79,6 @@ public class AlbumAdapter extends BaseAdapter {
         holder.textViewsl.setText(pl.getTrachCount()+" bài hát");
         holder.imgPlaylist = (ImageView) view.findViewById(R.id.albumicon);
         Picasso.with(context).load(pl.getArtworkUrl()).placeholder(R.drawable.music_placeholder).into(holder.imgPlaylist);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
         return view;
     }
 

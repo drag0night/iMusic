@@ -35,7 +35,7 @@ import vanhy.com.imusic.model.Playlist;
  */
 public class PlayListFragment extends Fragment implements OnAddedToDB{
 
-    private Context context;
+    private Context context = getActivity();
     private ArrayList<Playlist> listPl;
     private PlaylistAdapter adapter;
     private ListView listview;

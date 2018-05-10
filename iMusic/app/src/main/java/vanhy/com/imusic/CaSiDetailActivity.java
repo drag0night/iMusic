@@ -30,7 +30,6 @@ public class CaSiDetailActivity extends AppCompatActivity {
         ArrayList<BaiHat> list = new ArrayList<BaiHat>();
         BaiHatInPlaylistAdapter adapter = new BaiHatInPlaylistAdapter(this, R.layout.bai_hat_in_playlist_item, list);
         listview.setAdapter(adapter);
-
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

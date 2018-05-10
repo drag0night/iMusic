@@ -8,7 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
@@ -29,6 +31,8 @@ public class AlbumDetailActivity extends AppCompatActivity {
 
     private ListView listview;
     private ArrayList<BaiHat> listBh;
+    private ProgressBar progressBar;
+    private LinearLayout layout_list_track;
     private ImageView btnBack;
     private ImageView btnMore;
     private Album playlist;
@@ -39,7 +43,9 @@ public class AlbumDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist_detail);
-
+        progressBar = (ProgressBar) findViewById(R.id.pb_main_loader);
+        layout_list_track = (LinearLayout) findViewById(R.id.layout_list_track);
+        layout_list_track.setVisibility(View.GONE);
         listview = (ListView) findViewById(R.id.listViewBaiHat);
         btnBack = (ImageView) findViewById(R.id.btnImageBack);
         btnMore = (ImageView) findViewById(R.id.btnImageMore);
@@ -74,6 +80,7 @@ public class AlbumDetailActivity extends AppCompatActivity {
         });
     }
     public void getSongList(String query){
+        progressBar.setVisibility(View.VISIBLE);
         RequestQueue queue = VolleySingleton.getInstance(this).getRequestQueue();
         SoundcloudApiRequest request = new SoundcloudApiRequest(queue);
         request.getAlbum(query, new SoundcloudApiRequest.SoundcloudInterface() {
@@ -82,10 +89,14 @@ public class AlbumDetailActivity extends AppCompatActivity {
                 listBh.clear();
                 listBh.addAll((ArrayList<BaiHat>)songs);
                 adapter.notifyDataSetChanged();
+                progressBar.setVisibility(View.GONE);
+                layout_list_track.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onError(String message) {
+                progressBar.setVisibility(View.GONE);
+                layout_list_track.setVisibility(View.VISIBLE);
                 //Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
             }
         });
