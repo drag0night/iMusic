@@ -255,11 +255,13 @@ public class SQLite {
             db.execSQL(query);
             query="";
             for (String value : history) {
-                query=query+"INSERT INTO search_history(history) VALUES("+"'"+value+"'"+"); ";
-            }
-            if(history.size()>0){
+                query="INSERT INTO search_history(history) VALUES("+"'"+value+"'"+")";
                 db.execSQL(query);
             }
+//            Log.d("hehe",query);
+//            if(history.size()>0){
+//                db.execSQL(query);
+//            }
 
             db.close();
             return true;
@@ -270,13 +272,16 @@ public class SQLite {
     }
 
     public static ArrayList<String> getHistory(Context context) {
-        ArrayList<String> historyList=new ArrayList<>();
+        ArrayList<String> historyList=new ArrayList<String>();
         try {
             SQLiteDatabase db = context.openOrCreateDatabase(db_name, context.MODE_PRIVATE,null);
+
             Cursor cs = db.rawQuery("SELECT * FROM search_history", null);
             while (cs.moveToNext()) {
                 historyList.add(cs.getString(1));
+
             }
+            //Log.e("hoho: ", Integer.toString(historyList.size()));
             db.close();
         } catch (Exception e) {
             Log.e("SQLite: ",e.getMessage());
