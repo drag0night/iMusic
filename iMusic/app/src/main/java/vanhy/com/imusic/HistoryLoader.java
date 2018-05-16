@@ -1,13 +1,15 @@
 package vanhy.com.imusic;
 
 import android.content.Context;
+import android.os.Debug;
+import android.util.Log;
 
 import java.util.ArrayList;
 
 import vanhy.com.imusic.SQLite.SQLite;
 
 public class HistoryLoader {
-    private static final HistoryLoader ourInstance = new HistoryLoader();
+    private static HistoryLoader ourInstance = new HistoryLoader();
 
     private ArrayList<String> historyList;
 
@@ -17,6 +19,7 @@ public class HistoryLoader {
             historyList=new ArrayList<String>();
             historyList= SQLite.getHistory(context);
         }
+
         return historyList;
     }
 
