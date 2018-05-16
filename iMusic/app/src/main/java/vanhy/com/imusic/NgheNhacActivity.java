@@ -180,12 +180,16 @@ public class NgheNhacActivity extends AppCompatActivity{
                     isFavorite = false;
                     checkFavorite();
                     SQLite.deleteTrackInFavorite(NgheNhacActivity.this, songList.get(pos));
-                    FavoriteFragment.getInstance().onRefresh();
+                    if (FavoriteFragment.getInstance().getContext() != null) {
+                        FavoriteFragment.getInstance().onRefresh();
+                    }
                 } else {
                     isFavorite = true;
                     checkFavorite();
                     SQLite.addToFavorite(NgheNhacActivity.this, songList.get(pos));
-                    FavoriteFragment.getInstance().onRefresh();
+                    if (FavoriteFragment.getInstance().getContext() != null) {
+                        FavoriteFragment.getInstance().onRefresh();
+                    }
                 }
             }
         });
@@ -454,8 +458,10 @@ public class NgheNhacActivity extends AppCompatActivity{
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                 if (SQLite.addSongToPlaylist(NgheNhacActivity.this, listPl.get(position).getId(), songList.get(pos))) {
-//                                    OnAddedToDB onAddedToDB = PlayListFragment.getInstance();
-//                                    onAddedToDB.onRefresh();
+                                    if (PlayListFragment.getInstance().getContext() != null) {
+                                        OnAddedToDB onAddedToDB = PlayListFragment.getInstance();
+                                        onAddedToDB.onRefresh();
+                                    }
                                     Toast.makeText(NgheNhacActivity.this, "Thêm vào playlist "+listPl.get(position).getTen()+" thành công", Toast.LENGTH_SHORT).show();
                                 } else {
                                     Toast.makeText(NgheNhacActivity.this, "Bài hát đã có trong "+listPl.get(position).getTen(), Toast.LENGTH_SHORT).show();
@@ -486,8 +492,10 @@ public class NgheNhacActivity extends AppCompatActivity{
                                                 ArrayList<BaiHat> arrBh = new ArrayList<BaiHat>();
                                                 arrBh.add(songList.get(pos));
                                                 SQLite.createPlaylist(NgheNhacActivity.this, tenpl, arrBh);
-//                                                OnAddedToDB onAddedToDB = PlayListFragment.getInstance();
-//                                                onAddedToDB.onRefresh();
+                                                if (PlayListFragment.getInstance().getContext() != null) {
+                                                    OnAddedToDB onAddedToDB = PlayListFragment.getInstance();
+                                                    onAddedToDB.onRefresh();
+                                                }
                                                 Toast.makeText(NgheNhacActivity.this, "Thêm vào playlist thành công", Toast.LENGTH_SHORT).show();
                                             } else {
                                                 Toast.makeText(NgheNhacActivity.this, "Playlist đã tồn tại", Toast.LENGTH_SHORT).show();

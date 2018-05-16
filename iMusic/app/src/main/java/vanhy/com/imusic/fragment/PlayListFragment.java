@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +36,7 @@ import vanhy.com.imusic.model.Playlist;
  */
 public class PlayListFragment extends Fragment implements OnAddedToDB{
 
-    private Context context = getActivity();
+    private Context context;
     private ArrayList<Playlist> listPl;
     private PlaylistAdapter adapter;
     private ListView listview;
@@ -49,6 +50,11 @@ public class PlayListFragment extends Fragment implements OnAddedToDB{
         // Required empty public constructor
     }
 
+    @Nullable
+    @Override
+    public Context getContext() {
+         return context;
+    }
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,

@@ -29,7 +29,7 @@ public class FavoriteFragment extends Fragment implements OnAddedToDB{
 
     private ListView listViewFavorite;
 
-    private Context context;
+    private static Context context;
     private ArrayList<BaiHat> songList;
     private static final FavoriteFragment instance = new FavoriteFragment();
     private FavoriteAdapter adapter;
@@ -41,6 +41,10 @@ public class FavoriteFragment extends Fragment implements OnAddedToDB{
 
     public FavoriteFragment() {
         // Required empty public constructor
+    }
+
+    public Context getContext() {
+        return context;
     }
 
 

@@ -100,7 +100,9 @@ public class BaiHatAdapter extends BaseAdapter {
                     @Override
                     public void onClick(View v) {
                         if (SQLite.addToFavorite(context, listBH.get(i))) {
-                            FavoriteFragment.getInstance().onRefresh();
+                            if (FavoriteFragment.getInstance().getContext() != null) {
+                                FavoriteFragment.getInstance().onRefresh();
+                            }
                         } else {
                             Toast.makeText(context, "Đã có trong Yêu thích", Toast.LENGTH_SHORT).show();
                         }
@@ -125,8 +127,10 @@ public class BaiHatAdapter extends BaseAdapter {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                 if (SQLite.addSongToPlaylist(context, listPl.get(position).getId(), listBH.get(i))) {
-                                    OnAddedToDB onAddedToDB = PlayListFragment.getInstance();
-                                    onAddedToDB.onRefresh();
+                                    if (PlayListFragment.getInstance().getContext() != null) {
+                                        OnAddedToDB onAddedToDB = PlayListFragment.getInstance();
+                                        onAddedToDB.onRefresh();
+                                    }
                                     Toast.makeText(context, "Thêm vào playlist "+listPl.get(position).getTen()+" thành công", Toast.LENGTH_SHORT).show();
                                 } else {
                                     Toast.makeText(context, "Bài hát đã có trong "+listPl.get(position).getTen(), Toast.LENGTH_SHORT).show();
@@ -157,8 +161,10 @@ public class BaiHatAdapter extends BaseAdapter {
                                                 ArrayList<BaiHat> arrBh = new ArrayList<BaiHat>();
                                                 arrBh.add(listBH.get(i));
                                                 SQLite.createPlaylist(context, tenpl, arrBh);
-//                                                OnAddedToDB onAddedToDB = PlayListFragment.getInstance();
-//                                                onAddedToDB.onRefresh();
+                                                if (PlayListFragment.getInstance().getContext() != null) {
+                                                    OnAddedToDB onAddedToDB = PlayListFragment.getInstance();
+                                                    onAddedToDB.onRefresh();
+                                                }
                                                 Toast.makeText(context, "Thêm vào playlist thành công", Toast.LENGTH_SHORT).show();
                                             } else {
                                                 Toast.makeText(context, "Playlist đã tồn tại", Toast.LENGTH_SHORT).show();

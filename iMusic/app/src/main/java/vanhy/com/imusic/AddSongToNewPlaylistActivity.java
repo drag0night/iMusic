@@ -22,6 +22,7 @@ public class AddSongToNewPlaylistActivity extends AppCompatActivity {
 
     private ListView listView;
     private ImageButton btnDone;
+    private ImageButton btnBack;
 
     private String tenpl;
     private ArrayList<BaiHat> songList;
@@ -43,12 +44,14 @@ public class AddSongToNewPlaylistActivity extends AppCompatActivity {
         adapter = new ChonBaiHatAdapter(this, R.layout.chon_bai_hat_item, songList);
         listView.setAdapter(adapter);
         done();
+        back();
     }
 
     private void initView() {
         listView = (ListView) findViewById(R.id.listViewBaiHat);
         btnDone = (ImageButton) findViewById(R.id.btnImageDone);
         progressBar = (ProgressBar) findViewById(R.id.pb_main_loader);
+        btnBack = (ImageButton) findViewById(R.id.btnImageBack);
     }
 
     private void done() {
@@ -59,6 +62,15 @@ public class AddSongToNewPlaylistActivity extends AppCompatActivity {
                 SQLite.createPlaylist(AddSongToNewPlaylistActivity.this, tenpl, selectedList);
                 onAddedToDB = PlayListFragment.getInstance();
                 onAddedToDB.onRefresh();
+                onBackPressed();
+            }
+        });
+    }
+
+    private void back() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 onBackPressed();
             }
         });
