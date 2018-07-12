@@ -32,7 +32,7 @@ public class SoundcloudApiRequest {
 
     private RequestQueue queue;
     private static final String URL = "http://api.soundcloud.com/tracks?filter=public&limit=100&client_id="+ Config.CLIENT_ID;
-    private static final String URLPL = "http://api.soundcloud.com/playlists?client_id=a7Ucuq0KY8Ksn8WzBG6wj4x6pcId6BpU&limit=10";
+    private static final String URLPL = "http://api.soundcloud.com/playlists?client_id="+Config.CLIENT_ID+"&limit=10";
     private static final String TAG = "APP";
 
     public SoundcloudApiRequest(RequestQueue queue) {
